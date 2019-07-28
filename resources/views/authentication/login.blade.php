@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="vendors/css/style.css">
     <link rel="shortcut icon" href="images/favicon.png" />
 </head>
 <body>
@@ -15,13 +15,13 @@
         <div class="container-fluid page-body-wrapper full-page-wrapper auth-page">
             <div class="content-wrapper d-flex align-items-center auth auth-bg-1 theme-one">
                 <div class="row w-100">
-                        {{-- <div class="col-lg-12 text-center logo_body">
-                                <img src="images/bd_army_logo.png" width="100px" alt="Logo"/>
-                                <h3>Bangladesh Army</h3>
-                                <h4>Jessore Cantonment</h4>
+                        <div class="col-lg-12 text-center logo_body">
+                                <img src="images/dgda_logo.png" width="100px" alt="Logo"/>
+                                <h3>DGDA</h3>
+                                <h4>Directorate General of Drug Administration</h4>
                                 <br/>
                                 <br/>
-                            </div> --}}
+                            </div>
                     <div class="col-lg-4 mx-auto">
                         <div class="auto-form-wrapper">
                             <form method="POST" action="{{ route('login') }}"> @csrf <div class="form-group">
@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary submit-btn btn-block">Login</button>
+                                    <button type="submit" class="btn btn-success submit-btn btn-block">Login</button>
                                 </div>
                             </form>
                         </div>
@@ -64,6 +64,10 @@
         margin-left: -29px;
         margin-top: -241px;
         position: fixed;
+    }
+    .auth.auth-bg-1 {
+        background: #03481f !important;
+        background-size: cover;
     }
     </style>
 </body>
