@@ -19,7 +19,7 @@
                         <tr>
                             <td class="col-md-8">Visited area</td>
                             <td class="col-md-4">
-                              <input name="visited_area" type="text" placeholder="Visited area" class="entryfield form-control">
+                              <input name="visited_area" type="text" required="required" placeholder="Visited area" class="entryfield form-control">
                         </tr>
                         <tr>
                             <td>No. of visited pharmacy</td>
@@ -167,7 +167,7 @@
                         <tr>
                             <td>Enforcement Information</td>
                             <td>
-                                <select class="form-control form-control-lg" onchange="changeValueForm(this.value)" id="enforcement_information">
+                                <select class="form-control form-control-lg" name="enforcement_information" onchange="changeValueForm(this.value)" id="enforcement_information">
                                   <option value="">-- Select None --</option>
                                   <option value="Mobile_Court">Mobile Court</option>
                                   <option value="Magistrate_Court">Magistrate Court</option>
@@ -399,7 +399,8 @@
                                     </tr>
                                     <tr>
                                         <td>No. of drug licenses Transfer In</td>
-                                        <td><input type="number" name="official_no_of_drug_licenses_transfer_in" placeholder="No. of drug licenses Transfer In" class="entryfield form-control">
+                                        <td>
+                                          <input type="number" name="official_no_of_drug_licenses_transfer_in" placeholder="No. of drug licenses Transfer In" class="entryfield form-control">
                                         </td>
                                         <td>No. of drug licenses Transfer Out</td>
                                         <td>
@@ -424,7 +425,8 @@
                                     </tr>
                                     <tr>
                                         <td><span>No. of drug license address changed</span></td>
-                                        <td><input type="number" name="official_no_of_drug_license_address_changed" placeholder="No. of drug license address changed" class="entryfield form-control">
+                                        <td>
+                                          <input type="number" name="official_no_of_drug_license_address_changed" placeholder="No. of drug license address changed" class="entryfield form-control">
                                         </td>
                                         <td>Total revenue receipt</td>
                                         <td>
@@ -437,7 +439,8 @@
                                           <input type="number" name="official_no_of_sample_sent" placeholder="No. of sample(s) sent" class="entryfield form-control">
                                         </td>
                                         <td><span>No. of test report received </span></td>
-                                        <td><input type="number" name="official_no_of_test_report_received" placeholder="No. of test report received" class="entryfield form-control">
+                                        <td>
+                                          <input type="number" name="official_no_of_test_report_received" placeholder="No. of test report received" class="entryfield form-control">
                                         </td>
                                     </tr>
                                     <tr>
@@ -450,7 +453,7 @@
                                         </td>
                                         <td>
                                           <input type="text" name="official_description_of_substandard_drugs" placeholder="Description of substandard drugs" class="entryfield form-control">
-                                          </td>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Others</td>
