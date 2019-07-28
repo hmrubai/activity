@@ -42,9 +42,13 @@
                         <a href="{{ route('home') }}" class="nav-link">
                             <i class="mdi mdi-home"></i>Home</a>
                     </li>
-                    <li class="nav-item" id="home">
+                    <li class="nav-item" id="entry_activity">
                         <a href="{{ route('entryActivity') }}" class="nav-link">
                             <i class="mdi mdi-note-plus"></i>Entry activity</a>
+                    </li>
+                    <li class="nav-item" id="activity_list">
+                        <a href="{{ route('getAllList') }}" class="nav-link">
+                            <i class="mdi mdi-view-list"></i>Activity List</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
@@ -142,10 +146,12 @@
                     </li>
                 </ul>
             </nav>
-            <div class="main-panel"> @yield("content") </div>
+            <div class="main-panel"> 
+              @yield("content") 
+            </div>
         </div>
         <script src="vendors/js/vendor.bundle.base.js"></script>
-        <script src="vendors/js/vendor.bundle.addons.js"></script>
+        
         <style>
             .sidebar .nav .nav-item .nav-link .menu-title {
                 font-size: 14px !important;

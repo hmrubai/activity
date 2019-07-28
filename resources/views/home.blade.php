@@ -12,7 +12,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Activities</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $activities }}</h3>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Daily Activities</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $activities }}</h3>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Active</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $user }}</h3>
                             </div>
                         </div>
                     </div>
