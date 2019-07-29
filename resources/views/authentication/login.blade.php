@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success submit-btn btn-block">Login</button>
+                                    <button type="submit" class="btn btn-danger submit-btn btn-block">Login</button>
                                 </div>
                             </form>
                         </div>
@@ -66,7 +66,7 @@
         position: fixed;
     }
     .auth.auth-bg-1 {
-        background: #03481f !important;
+        background: #8c090a !important;
         background-size: cover;
     }
     </style>

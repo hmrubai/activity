@@ -504,7 +504,7 @@
                                                   <button type="submit" class="btn btn-success btn-fw">Save</button>
                                               </td>
                                               <td>
-                                                  <button type="button" class="btn btn-info btn-fw">Preview</button>
+                                                  <!--<button type="button" class="btn btn-info btn-fw">Preview</button>-->
                                               </td>
                                               <td></td>
                                             </tr>
