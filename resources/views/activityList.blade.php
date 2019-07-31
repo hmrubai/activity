@@ -42,7 +42,7 @@
                                 <div class="modal-dialog custom-dialog-position" role="document">
                                   <div class="modal-content custom-modal-size">
                                     <div class="modal-header">
-                                      <h5 class="modal-title">Details (Added by {{ $activity->name }} | Date: <?php echo date("Y-m-d", strtotime($activity->created_at)); ?>)</h5>
+                                      <h5 class="modal-title"> Added by {{ $activity->name }} | Date: <?php echo date("Y-m-d", strtotime($activity->created_at)); ?></h5>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>
@@ -50,6 +50,7 @@
                                     <div class="modal-body">
                                         <div class="card">
                                           <div class="card-body">
+                                            <p class="float-right">Lat: {{ $activity->lat }} | Long: {{ $activity->long }}</p>
                                             <ul class="list-star">
                                               <li>Visited Area: {{ $activity->visited_area }}</li>
                                               <li>No. of Visited Pharmacy: {{ $activity->no_of_visited_pharmacy }}</li>

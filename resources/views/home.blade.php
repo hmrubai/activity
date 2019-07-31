@@ -1,6 +1,7 @@
 @extends('layouts.master') 
 @section('content') 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 <div class="content-wrapper">
 <?php if(Auth::user()->user_type == "ADMIN"){ ?>
     <div class="row">
@@ -31,9 +32,9 @@
                             <i class="mdi mdi-receipt text-warning icon-lg"></i>
                         </div>
                         <div class="float-right">
-                            <p class="mb-0 text-right">Total Activities</p>
+                            <p class="mb-0 text-right">Last Week Activities</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">{{ $count_activities }}</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $last_week }}</h3>
                             </div>
                         </div>
                     </div>
@@ -87,9 +88,20 @@
                 <div class="card-body">
                     <?php if(Auth::user()->user_type == "ADMIN"){ ?>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
                             Current Location <br/><br/>
-                            <div id="map" style="width: 500px; height: 400px;"></div>
+                            <div id="map" style="width: 400px; height: 390px;"></div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="chart-container" style="position: relative; height:40vh; width:49vw">
+                                <canvas id="myChart" style="height:40vh; width:49vw"></canvas>
+                            </div>
+                            <div style="background-color: #d9edfc; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
+                                <p>Active User</p>
+                            </div>
+                            <div style="background-color: #ffe1e6; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
+                                <p>Inactive User</p>
+                            </div>
                         </div>
                     </div>
                     <?php 
@@ -141,6 +153,7 @@
                                       <div class="modal-body">
                                           <div class="card">
                                             <div class="card-body">
+                                              <p class="float-right">Lat: {{ $activity->lat }} | Long: {{ $activity->long }}</p>
                                               <ul class="list-star">
                                                 <li>Visited Area: {{ $activity->visited_area }}</li>
                                                 <li>No. of Visited Pharmacy: {{ $activity->no_of_visited_pharmacy }}</li>
@@ -330,6 +343,53 @@
             alert('W3C Geolocation API is not available');
         }
 
+        $(function () {
+            var ctx = document.getElementById("myChart").getContext('2d');
+            const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var current_datetime = new Date();
+            var formatted_date = current_datetime.getDate() + "-" + months[current_datetime.getMonth()] + "-" + current_datetime.getFullYear();
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [formatted_date, formatted_date],
+                    datasets: [{
+                        label: 'Today\'s user activities',
+                        data: [<?php echo $inactive_staff; ?>, <?php echo $active_stuff; ?>],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    },
+                    color: [
+                        'green',  // color for data at index 2
+                        'black',  // color for data at index 3
+                    ]
+                }
+            });
+        });
     </script>
     <style>
         table {
