@@ -1,5 +1,6 @@
 @extends('layouts.master') 
 @section('content') 
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <div class="content-wrapper">
     <div class="row">
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
@@ -81,7 +82,10 @@
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
-                <div class="card-body"> Activity List </div>
+                <div class="card-body"> 
+                    My Location
+                    <div id="map" style="width: 500px; height: 400px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,6 +99,68 @@
     </footer>
     <script>
         $("#home").addClass("active");
+    
+        //Get GEO Location
+        var x = document.getElementById("demo");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude + 
+            "<br>Longitude: " + position.coords.longitude;
+        }
+        //end of GEO Location
+
+        //get location via google map
+        if (navigator.geolocation) { 
+            navigator.geolocation.getCurrentPosition(function(position) {  
+                var point = new google.maps.LatLng(position.coords.latitude, 
+                                                position.coords.longitude);
+                // Initialize the Google Maps API v3
+                var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: point,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                // Place a marker
+                new google.maps.Marker({
+                position: point,
+                map: map
+                });
+                
+                
+                google.maps.event.addListener(map, 'click', function (event) {
+                    //alert(event.latLng);          
+                    geocoder.geocode({
+                        'latLng': event.latLng
+                    }, function (results, status) {
+                        console.log(results);
+                        // if (status ==
+                        //     google.maps.GeocoderStatus.OK) {
+                        //     if (results[1]) {
+                        //         alert(results[1].formatted_address);
+                        //     } else {
+                        //         alert('No results found');
+                        //     }
+                        // } else {
+                        //     alert('Geocoder failed due to: ' + status);
+                        // }
+                    });
+                }); 
+                //google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+            }); 
+        } 
+        else {
+            alert('W3C Geolocation API is not available');
+        }
+
     </script>
 </div> 
 @endsection
