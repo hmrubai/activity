@@ -10,6 +10,7 @@
                   <table>
                       <thead>
                           <tr>
+                              <th>Date</th>
                               <th>Visited By</th>
                               <th>Visited Area</th>
                               <th>No. of visited pharmacy</th>
@@ -25,6 +26,9 @@
                         foreach ($activities as $activity):
                         ?>
                         <tr>
+                            <td>
+                              <?php echo date("Y-m-d", strtotime($activity->created_at)); ?>
+                            </td>
                             <td>{{ $activity->name }}</td>
                             <td>{{ $activity->visited_area }}</td>
                             <td>{{ $activity->no_of_visited_pharmacy }}</td>
@@ -38,7 +42,7 @@
                                 <div class="modal-dialog custom-dialog-position" role="document">
                                   <div class="modal-content custom-modal-size">
                                     <div class="modal-header">
-                                      <h5 class="modal-title">Details (Added by {{ $activity->name }})</h5>
+                                      <h5 class="modal-title">Details (Added by {{ $activity->name }} | Date: <?php echo date("Y-m-d", strtotime($activity->created_at)); ?>)</h5>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>

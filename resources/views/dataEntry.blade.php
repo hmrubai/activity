@@ -1,4 +1,7 @@
-@extends('layouts.master') @section('content') <div class="content-wrapper">
+@extends('layouts.master') 
+@section('content') 
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<div class="content-wrapper">
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -38,8 +41,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 30%">Visited area</td>
+                                    <td style="width: 30%" onclick="getLocationValue()">Visited area</td>
                                     <td style="width: 70%">
+                                      <input type="text" name="latitude" id="latitude" value="0" hidden/>
+                                      <input type="text" name="longitude" id="longitude" value="0" hidden/>
                                       <input name="visited_area" type="text" required="required" placeholder="Visited area" class="entryfield form-control">
                                     </td>
                                 </tr>
@@ -530,11 +535,26 @@
         </div>
     </footer>
     <script>
+        //Get GEO Location
+        var x = document.getElementById("demo");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                //x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            $('#latitude').val(position.coords.latitude);
+            $('#longitude').val(position.coords.longitude);
+        }
+        //end of GEO Location
+
+        getLocation();
+
         $("#entry_activity").addClass("active");
 
         function changeValueForm(form_name){
-          console.log(form_name);
-
           if(form_name === 'Mobile_Court') {
             $("#Mobile_Court").show(500);
             $("#Magistrate_Court").hide(500);

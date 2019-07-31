@@ -123,6 +123,9 @@ class DailyActivityController extends Controller
         $addActivity->official_description_of_substandard_drugs         = $request->official_description_of_substandard_drugs;
         $addActivity->official_others                                   = $request->official_others;
         $addActivity->official_sealed                                   = $request->official_sealed;
+        $addActivity->lat                                               = $request->latitude;
+        $addActivity->long                                              = $request->longitude;
+        $addActivity->created_at                                        = now();
 
         $addActivity->save();
 
