@@ -140,7 +140,7 @@
                               <td>{{ $activity->no_of_identified_not_renewed_license }}</td>
                               <td>{{ $activity->no_of_sample_collected }}</td>
                               <td>
-                                <button type="button" data-toggle="modal" data-target="#DetailsModal_<?php echo $activity->id; ?>" class="btn btn-success btn-fw">Details</button>
+                                <button type="button" data-toggle="modal" <?php if($activity->lat){ ?> onclick="setGEOLocation(<?php echo $activity->id; ?>, <?php echo $activity->lat; ?>, <?php echo $activity->long; ?>)" <?php } ?> data-target="#DetailsModal_<?php echo $activity->id; ?>" class="btn btn-success btn-fw">Details</button>
                                 <div class="modal fade" id="DetailsModal_<?php echo $activity->id; ?>" tabindex="-1" role="dialog" aria-labelledby="DetailsModal_<?php echo $activity->id; ?>" aria-hidden="true">
                                   <div class="modal-dialog custom-dialog-position" role="document">
                                     <div class="modal-content custom-modal-size">
@@ -381,6 +381,11 @@
                                                     </tr>
                                                 </table>
                                               </ul>
+                                              <div class="col-lg-12">
+                                                    <?php if($activity->lat){ ?>
+                                                        <div id="map_<?php echo $activity->id; ?>" style="width: 100%; height: 350px;"></div>
+                                                    <?php } ?>
+                                              </div>
                                             </div>
                                           </div>
                                       </div>
@@ -427,6 +432,7 @@
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
         }
+
         function showPosition(position) {
             x.innerHTML = "Latitude: " + position.coords.latitude + 
             "<br>Longitude: " + position.coords.longitude;
@@ -434,7 +440,7 @@
         //end of GEO Location
 
         //get location via google map
-        if (navigator.geolocation) { 
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {  
                 var point = new google.maps.LatLng(position.coords.latitude, 
                                                 position.coords.longitude);
@@ -526,6 +532,23 @@
                 }
             });
         });
+
+        function setGEOLocation(map_id, lat, long){
+          if(lat){
+            var point = new google.maps.LatLng(lat, long);
+            // Initialize the Google Maps API v3
+            var map = new google.maps.Map(document.getElementById("map_"+map_id), {
+                zoom: 15,
+                center: point,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            // Place a marker
+            new google.maps.Marker({
+                position: point,
+                map: map
+            });
+          }
+        };
     </script>
     <style>
         table {
