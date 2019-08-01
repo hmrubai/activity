@@ -384,7 +384,7 @@
                                               <div class="col-lg-12">
                                                     <?php if($activity->lat){ ?>
                                                         <div id="map_<?php echo $activity->id; ?>" style="width: 100%; height: 350px;"></div>
-                                                    <?php } ?>
+                                                    <?php }else{ echo "No data found! Probably your location service was disabled!"; } ?>
                                               </div>
                                             </div>
                                           </div>
