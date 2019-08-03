@@ -125,7 +125,9 @@
                                 <div class="text-wrapper">
                                     <p class="profile-name">{{ Auth::user()->name }}</p>
                                     <div>
-                                        <small class="designation text-muted">Admin</small>
+                                        <small class="designation text-muted">
+                                            <?php echo Auth::user()->designation; ?>
+                                        </small>
                                         <span class="status-indicator online"></span>
                                     </div>
                                 </div>
