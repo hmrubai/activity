@@ -3,7 +3,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 <div class="content-wrapper">
-<?php if(Auth::user()->user_type == "ADMIN"){ ?>
+<?php if(Auth::user()->user_type == "ADMIN" || Auth::user()->user_type == "MEETING"){ ?>
     <div class="row">
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
             <div class="card card-statistics">
@@ -21,25 +21,6 @@
                     </div>
                     <a href="#" class="nav-link"><p class="text-muted mt-3 mb-0">
                         <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> Show Daily Activities </p></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-            <div class="card card-statistics">
-                <div class="card-body">
-                    <div class="clearfix">
-                        <div class="float-left">
-                            <i class="mdi mdi-receipt text-warning icon-lg"></i>
-                        </div>
-                        <div class="float-right">
-                            <p class="mb-0 text-right">Last Week Activities</p>
-                            <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">{{ $last_week }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="nav-link"><p class="text-muted mt-3 mb-0">
-                        <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Show All Activities </p></a>
                 </div>
             </div>
         </div>
@@ -80,6 +61,24 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <i class="mdi mdi-account-location text-info icon-lg"></i>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Meeting Minutes</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="nav-link"> <p class="text-muted mt-3 mb-0"><i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Meeting Minutes </p></a>
+                </div>
+            </div>
+        </div>
     </div>
 <?php } ?>
     <div class="row">
@@ -109,7 +108,6 @@
                     else{
                     ?>
                     Activity List 
-                    <br/><br/>
                     <table>
                         <thead>
                             <tr>
@@ -126,7 +124,9 @@
                         </thead>
                         <tbody>
                           <?php 
+                          $count = 0;
                           foreach ($activities as $activity):
+                          $count++;
                           ?>
                           <tr>
                               <td>
@@ -399,10 +399,77 @@
                             </tr>
                           <?php 
                           endforeach; 
+                          
+                          if(!$count){
+                            ?> 
+                            <tr>
+                                <td colspan="9">No Activity Found</td>
+                            </tr>
+                            <?php
+                          }
                           ?>
                           
                         </tbody>
                     </table>
+                    
+                    <br><br>
+                      Actions/Decisions List 
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>SL#</th>
+                            <th>New Actions/Decisions</th>
+                            <th>Responsibilities</th>
+                            <th>Dateline</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                          <tr>
+                              <td>1.</td>
+                              <td>ভলেন্টারি রিকল করলে ঔষূধ প্রশাশন কে জানাতে হবে</td>
+                              <td>আমদানিকারি প্রতিষ্ঠান</td>
+                              <td>2019-07-20</td>
+                              <td>
+                                <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>2.</td>
+                              <td>বিভিন্ন মিডিয়ায় বিজ্ঞপ্তি প্রকাশ করতে হবে </td>
+                              <td>আমদানিকারি প্রতিষ্ঠান</td>
+                              <td>2019-07-03</td>
+                              <td>
+                                <button type="button" class="btn btn-danger btn-rounded btn-fw">Not Done</button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>3.</td>
+                              <td>পোস্ট মার্কেটিং সারভিলাঞ্চ সংক্রান্ত কার্যাদি পরিচালনা করার বাবস্থা থাকতে হবে</td>
+                              <td>আমদানিকারি প্রতিষ্ঠান</td>
+                              <td>2019-07-10</td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-rounded btn-fw">Done</button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>4.</td>
+                              <td>মতামতের ভিত্তিতে গাইড লাইন টি চূড়ান্ত করতে হবে  </td>
+                              <td>আমদানিকারি প্রতিষ্ঠান</td>
+                              <td>2019-07-02</td>
+                              <td>
+                                <button type="button" class="btn btn-warning btn-rounded btn-fw">Attempted</button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>5.</td>
+                              <td>প্রডাক্ট রিকল ডিপো / ফার্মাসি / প্যাশেন্ট লেভেল পর্যন্ত থাকতে হবে</td>
+                              <td>আমদানিকারি প্রতিষ্ঠান</td>
+                              <td>2019-07-17</td>
+                              <td>
+                                <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
+                              </td>
+                          </tr>
+                      </table>
                     
                     <?php
                     }
@@ -414,7 +481,7 @@
     </div>
     <footer class="footer">
         <div class="container-fluid clearfix">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="#"
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="#"
                     target="_blank">DGDA</a>. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><a href="#"
                     target="_blank">Cerebrum Technology Limited</a></span>

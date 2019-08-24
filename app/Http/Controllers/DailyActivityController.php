@@ -132,6 +132,10 @@ class DailyActivityController extends Controller
         return redirect()->action('HomeController@entryDailyActivity')->with('success', "Data has been added successfully added!");
     }
 
+    public function meetingList(){
+        return view('meetingList');
+    }
+
     public function show(DailyActivity $dailyActivity)
     {}
 

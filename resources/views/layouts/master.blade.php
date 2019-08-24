@@ -46,10 +46,14 @@
                         <a href="{{ route('entryActivity') }}" class="nav-link">
                             <i class="mdi mdi-note-plus"></i>Entry activity</a>
                     </li>
-                <?php if(Auth::user()->user_type == "ADMIN"){ ?>
+                <?php if(Auth::user()->user_type == "ADMIN" || Auth::user()->user_type == "MEETING"){ ?>
                     <li class="nav-item" id="activity_list">
                         <a href="{{ route('getAllList') }}" class="nav-link">
                             <i class="mdi mdi-view-list"></i>Activity List</a>
+                    </li>
+                    <li class="nav-item" id="meeting_list">
+                        <a href="{{ route('meetingList') }}" class="nav-link">
+                            <i class="mdi mdi-view-list"></i>Meeting</a>
                     </li>
                 <?php } ?>
                 </ul>
