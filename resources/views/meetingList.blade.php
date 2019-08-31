@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="form-group">
                                       <label for="exampleInputPassword4">	Vanue</label>
-                                      <input type="text" class="form-control" id="exampleInputPassword4" placeholder="	Vanue">
+                                      <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Vanue">
                                     </div>
                                     <div class="form-group">
                                       <label>File upload</label>
