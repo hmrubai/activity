@@ -133,7 +133,7 @@ class DailyActivityController extends Controller
     }
 
     public function meetingList(){
-        return view('meetingList');
+        
     }
 
     public function show(DailyActivity $dailyActivity)

@@ -68,6 +68,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="rank" class="col-md-4 col-form-label text-md-right">{{ __('SL#') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="rank" type="text" class="form-control @error('rank') is-invalid @enderror" name="rank" value="{{ old('rank') }}" required autocomplete="rank">
+
+                                @error('rank')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

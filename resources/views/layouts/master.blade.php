@@ -10,14 +10,16 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/timePicker.css">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script src="js/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="css/sweetalert2.min.css">
 
     <script type="text/javascript" src="js/jquery-timepicker.js"></script>
-    <script src="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
-    <link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
+    <script src="js/timepicker.min.js"></script>
+    <link href="css/timepicker.min.css" rel="stylesheet"/>
+
+    <script src="js/chart.js@2.8.0"></script>
 
     <link rel="shortcut icon" href="images/favicon.png" />
     <meta name="csrf-token" content="">

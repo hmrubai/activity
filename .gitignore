@@ -17,6 +17,11 @@ storage/*.key
 Homestead.yaml
 Homestead.json
 
+public/files/meetings/*
+public/files/drug_court/*
+public/files/mobile_court/*
+public/files/magistrate_court/*
+
 .phpunit.result.cache
 
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer

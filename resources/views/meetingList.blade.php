@@ -6,6 +6,13 @@
             <div class="card">
                 <div class="card-body"> 
                   Meeting List 
+                  <?php 
+                  
+                  // echo "<pre>";
+                  // print_r($meetingInformation);
+                  // exit;
+                  
+                  ?>
                   <button type="button"  data-toggle="modal" data-target="#AddMeeting" class="btn btn-secondary float-right">Add New Meeting</button>
                   {{-- Start Modal --}}
                   <div class="modal fade" id="AddMeeting" tabindex="-1" role="dialog" aria-labelledby="AddMeeting" aria-hidden="true">
@@ -22,63 +29,97 @@
                               <div class="card-body">
                                   
                                   <h4 class="card-title">Meeting Details</h4>
-                                  <form class="forms-sample">
+                                  <form class="forms-sample" onsubmit="event.preventDefault();" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                                     <div class="form-group">
-                                      <label for="exampleInputName1">Date & Time</label>
-                                      <input class="form-control" placeholder="dd/mm/yyyy">
+                                      <label for="meeting_date">Reasone of meeting/Meeting Title</label>
+                                      <input class="form-control" name="meeting_title" id="meeting_title" type="text" placeholder="Reasone of meeting/Meeting Title">
                                     </div>
                                     <div class="form-group">
-                                      <label for="exampleInputEmail3">Chairperson</label>
-                                      <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Chairperson">
+                                      <label for="meeting_date">Date</label>
+                                      <input class="form-control" name="meeting_date" id="meeting_date" type="date" placeholder="dd/mm/yyyy">
                                     </div>
                                     <div class="form-group">
-                                      <label for="exampleInputEmail3">Participant</label>
-                                      <select class="form-control" multiple size="6">
-                                        <option>MAJ. GEN. MD MAHBUBUR RAHMAN</option>
-                                        <option>MD. RUHUL AMIN</option>
-                                        <option>NAYER SULTANA</option>
-                                        <option>DR. KHANDAKER SAGIR AHMED</option>
-                                        <option>MD. ALTAF HOSSAIN</option>
-                                        <option>MD. NURUL ISLAM</option>
-                                        <option>MD. MOSTAFIZUR RAHMAN</option>
-                                        <option>MD. AYUB HOSSAIN</option>
-                                        <option>MD. ASHRAF HOSSAIN</option>
-                                        <option>MIRZA MD. ANWARUL BASHED</option>
-                                        <option>MOHAMMAD MOZAMMEL HOSSAIN</option>
-                                        <option>MD. EYAHYA</option>
-                                        <option>MD. SALAH UDDIN</option>
-                                        <option>MD.MOHID ISLAM</option>
+                                      <label for="meeting_date">Time</label>
+                                      <input class="form-control" name="meeting_time" id="meeting_time" type="text" placeholder="সকাল ১০ ঘটিকা">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="Chairperson">Chairperson</label>
+                                      <input type="text" class="form-control" name="chairperson" id="chairperson" placeholder="Chairperson">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="participants">Attendees</label>
+                                      <select class="form-control" name="participants" id="participants" multiple size="6">
+                                        <?php foreach($users as $user): ?>
+                                        <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
+                                      <?php endforeach; ?>
                                       </select>
                                     </div>
                                     <div class="form-group">
-                                      <label for="exampleInputPassword4">	Vanue</label>
-                                      <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Vanue">
+                                      <label for="vanue">	Vanue</label>
+                                      <input type="text" class="form-control" name="vanue" id="vanue" placeholder="Vanue">
                                     </div>
                                     <div class="form-group">
-                                      <label>File upload</label>
-                                      <input type="file" name="img[]" class="file-upload-default">
-                                      <div class="input-group col-xs-12">
-                                        <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
-                                        <span class="input-group-append">
-                                          <button class="file-upload-browse btn btn-info" type="button">Upload</button>
-                                        </span>
+                                      <label for="minutes_taken_by">Minutes taken by</label>
+                                      <select class="form-control" name="minutes_taken_by" id="minutes_taken_by">
+                                        <?php foreach($users as $user): ?>
+                                        <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
+                                      <?php endforeach; ?>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="minutes_reviewed_by">Minutes reviewed by</label>
+                                      <select class="form-control" name="minutes_reviewed_by" id="minutes_reviewed_by">
+                                        <?php foreach($users as $user): ?>
+                                        <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
+                                      <?php endforeach; ?>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="apologies">	Apologies</label>
+                                      <input type="text" class="form-control" name="apologies" id="apologies" placeholder="Apologies">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="discussions">	Discussions</label>
+                                      <input type="text" class="form-control" name="discussions" id="discussions" placeholder="Discussions">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="attachment">Attach File</label>
+                                      <input type="file" name="attachment" class="form-control-file" id="attachment">
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                        <input type="text" name="agenda" id="agenda"  class="form-control" placeholder="Agenda" aria-label="Agenda" aria-describedby="colored-addon3">
+                                        <div class="input-group-append bg-primary border-primary">
+                                          <span onclick="addAgenda()" class="input-group-text bg-transparent add-butn">
+                                            <i class="mdi mdi-clipboard-plus text-white"></i>
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
-                                    <div class="form-group">
-                                      <label for="exampleInputCity1">Agenda</label>
-                                      <input type="text" class="form-control" id="exampleInputCity1" placeholder="Agenda">
+                                    <div id="agenda_item">
+                                      <ul class="list-group">
+                                      </ul>
                                     </div>
+                                    <br/>
                                     <div class="form-group">
-                                      <label for="exampleTextarea1">Action Items</label>
-                                      <textarea class="form-control" id="exampleTextarea1" rows="5" spellcheck="false">
-                                        - ভলেন্টারি রিকল করলে ঔষূধ প্রশাশন কে জানাতে হবে
-                                        - বিভিন্ন মিডিয়ায় বিজ্ঞপ্তি প্রকাশ করতে হবে
-                                        - পোস্ট মার্কেটিং সারভিলাঞ্চ সংক্রান্ত কার্যাদি পরিচালনা করার বাবস্থা থাকতে হবে
-                                        - মতামতের ভিত্তিতে গাইড লাইন টি চূড়ান্ত করতে হবে
-                                        - ্রডাক্ট রিকল ডিপো / ফার্মাসি / প্যাশেন্ট লেভেল পর্যন্ত থাকতে হবে
-                                      </textarea>
+                                      <div class="input-group">
+                                        <input type="text" name="action_item" id="action_item" class="form-control" placeholder="Action Items" aria-label="Action Items" aria-describedby="colored-addon3">
+                                        <input type="text" name="responsibilities" id="responsibilities" class="form-control" placeholder="Responsibilities" aria-label="Responsibilities" aria-describedby="colored-addon3">
+                                        <input type="date" name="deadline" id="deadline" class="form-control" placeholder="Deadline" aria-label="Deadline" aria-describedby="colored-addon3">
+                                        <div class="input-group-append bg-primary border-primary">
+                                          <span onclick="addActionList()" class="input-group-text bg-transparent add-butn">
+                                            <i class="mdi mdi-clipboard-plus text-white"></i>
+                                          </span>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <button type="submit" class="btn btn-success mr-2">Submit</button>
+                                    <div id="action_list">
+                                      <ul class="list-group">
+                                      </ul>
+                                    </div>
+                                    <br/>
+                                    
+                                    <button type="submit" onclick="SubmitMettingDetails()" class="btn btn-success mr-2">Submit</button>
                                     <button class="btn btn-light">Cancel</button>
                                   </form>
                               </div>
@@ -97,6 +138,7 @@
                       <thead>
                           <tr>
                               <th>Date</th>
+                              <th>Title</th>
                               <th>Chairperson</th>
                               <th>Time</th>
                               <th>Vanue</th>
@@ -105,145 +147,174 @@
                           </tr>
                       </thead>
                       <tbody>
+                        <?php 
+                        foreach($meetingInformation as $meetingDetails):
+                        $meetingInfo = $meetingDetails['meeting'];
+                        $attendee_list = $meetingDetails['attendee_list'];
+                        $agenda = $meetingDetails['agenda'];
+                        $action_item = $meetingDetails['action_item'];
+                        ?>
+
                           <tr>
-                            <td>2019-07-01</td>
-                            <td>জনাব রুহুল আমিন, পরিচালক  </td>
-                            <td>সকাল ১০ ঘটিকা</td>
-                            <td>ঔষূধ প্রশাশন অধিদপ্তর - সম্মেলন কক্ষ</td>
-                            <td>Pharmaceutical Product Recall Gonosunani</td>
+                            <td>{{ $meetingInfo->date_time }}</td>
+                            <td>{{ $meetingInfo->meeting_title }}</td>
+                            <td>{{ $meetingInfo->chairperson }}</td>
+                            <td>{{ $meetingInfo->meeting_time }}</td>
+                            <td>{{ $meetingInfo->vanue }}</td>
                             <td>
-                              <button type="button" class="btn btn-success">Details</button>
-                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem" class="btn btn-warning">Action Items</button>
+                              <?php 
+                                foreach($agenda as $item):
+                              ?>
+                                {{ $item->title }}<br>
+                              <?php 
+                              endforeach; 
+                              ?>
+                            </td>
+                            <td>
+                              <button type="button" data-toggle="modal" data-target="#MeetingDetails_<?php echo $meetingInfo->id; ?>" class="btn btn-success"><i class="mdi mdi-eye"></i></button>
+                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem_<?php echo $meetingInfo->id; ?>" class="btn btn-warning"><i class="mdi mdi-view-list"></i></button>
+
+                              {{-- Start Action item Modal --}}
+                              <div class="modal fade" id="DetailsActionItem_<?php echo $meetingInfo->id; ?>" tabindex="-1" role="dialog" aria-labelledby="DetailsActionItem_<?php echo $meetingInfo->id; ?>" aria-hidden="true">
+                                  <div class="modal-dialog custom-dialog-position" role="document">
+                                    <div class="modal-content custom-modal-size">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title">Action items Of {{ $meetingInfo->meeting_title }}  (Date: {{ $meetingInfo->date_time }})</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                          <div class="card">
+                                            <div class="card-body">
+                                                <table>
+                                                  <thead>
+                                                    <tr>
+                                                      <th>SL#</th>
+                                                      <th>New Actions/Decisions</th>
+                                                      <th>Responsibilities</th>
+                                                      <th>Dateline</th>
+                                                    </tr>
+                                                  </thead>
+                                                    <?php 
+                                                      $sl = 1;
+                                                      foreach($action_item as $list):
+                                                    ?>
+                                                      <tr>
+                                                          <td>{{ $sl }}.</td>
+                                                          <td>{{ $list->title }}</td>
+                                                          <td>{{ $list->responsibilities }}</td>
+                                                          <td>{{ $list->deadline }}</td>
+                                                      </tr>
+                                                    <?php 
+                                                      $sl++;
+                                                      endforeach; 
+                                                    ?>
+                                                </table>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {{-- End Action item Modal --}}
+
+                                {{-- Start Details Modal --}}
+                                <div class="modal fade" id="MeetingDetails_<?php echo $meetingInfo->id; ?>" tabindex="-1" role="dialog" aria-labelledby="MeetingDetails_<?php echo $meetingInfo->id; ?>" aria-hidden="true">
+                                  <div class="modal-dialog custom-dialog-position" role="document">
+                                    <div class="modal-content custom-modal-size">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title">Meeting Details Of {{ $meetingInfo->meeting_title }}  (Date: {{ $meetingInfo->date_time }})</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                          <div class="card">
+                                            <div class="card-body">
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="2"><strong>Meeting Minutes</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Reasone of meeting/Meeting Title</td>
+                                                        <td>{{ $meetingInfo->meeting_title }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chairperson</td>
+                                                        <td>{{ $meetingInfo->chairperson }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date</td>
+                                                        <td>{{ $meetingInfo->date_time }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Time</td>
+                                                        <td>{{ $meetingInfo->meeting_time }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vanue</td>
+                                                        <td>{{ $meetingInfo->vanue }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Minutes taken by</td>
+                                                        <td>{{ $meetingDetails['taken_by_name'] }} , {{ $meetingDetails['taken_by_designation'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Minutes reviewed by</td>
+                                                        <td>{{ $meetingDetails['reviewed_by_name'] }} , {{ $meetingDetails['reviewed_by_designation'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Attendees</td>
+                                                        <td>
+                                                            <?php 
+                                                            $sl = 1;
+                                                            foreach($attendee_list as $attendee):
+                                                          ?>
+                                                            {{ $attendee['name'] }} ( {{ $attendee['designation'] }} ), 
+                                                          <?php 
+                                                            $sl++;
+                                                            endforeach; 
+                                                          ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Apologies</td>
+                                                        <td>{{ $meetingInfo->apologies }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Discussions</td>
+                                                        <td>{{ $meetingInfo->discussions }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Attachment</td>
+                                                        <td>
+                                                            <a href="files/meetings/<?php echo $meetingInfo->attachments; ?>" download="<?php echo $meetingInfo->attachments; ?>"><button type="button" class="btn btn-info">Download</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {{-- End Action item Modal --}}
+
                             </td>
                           </tr>
-                          <tr>
-                            <td>2019-06-26</td>
-                            <td>জনাব রুহুল আমিন, পরিচালক  </td>
-                            <td>দুপুর ১২ ঘটিকা</td>
-                            <td>সম্মেলন কক্ষ</td>
-                            <td>Recipe Related Circular</td>
-                            <td>
-                              <button type="button" class="btn btn-success">Details</button>
-                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem" class="btn btn-warning">Action Items</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2019-06-23</td>
-                            <td>জনাব রুহুল আমিন, পরিচালক  </td>
-                            <td>দুপুর ২ ঘটিকা</td>
-                            <td>ঔষূধ প্রশাশন অধিদপ্তর - সম্মেলন কক্ষ</td>
-                            <td>Vokta Audhikar</td>
-                            <td>
-                              <button type="button" class="btn btn-success">Details</button>
-                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem" class="btn btn-warning">Action Items</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2019-04-26</td>
-                            <td>জনাব রুহুল আমিন, পরিচালক  </td>
-                            <td>দুপুর ১২ ঘটিকা</td>
-                            <td>ঔষূধ প্রশাশন অধিদপ্তর - সম্মেলন কক্ষ</td>
-                            <td>Nokol Vazal Proterode</td>
-                            <td>
-                              <button type="button" class="btn btn-success">Details</button>
-                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem" class="btn btn-warning">Action Items</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2019-04-13</td>
-                            <td>জনাব রুহুল আমিন, পরিচালক  </td>
-                            <td>বিকেল ৪ ঘটিকা</td>
-                            <td>ঔষূধ প্রশাশন অধিদপ্তর</td>
-                            <td>Food Supliment</td>
-                            <td>
-                              <button type="button" class="btn btn-success">Details</button>
-                              <button type="button" data-toggle="modal" data-target="#DetailsActionItem" class="btn btn-warning">Action Items</button>
-                            </td>
-                          </tr>
+
+                        <?php 
+                      endforeach; 
+                      ?>
                       </tbody>
                   </table>
-
-                  {{-- Start Modal --}}
-                  <div class="modal fade" id="DetailsActionItem" tabindex="-1" role="dialog" aria-labelledby="DetailsActionItem" aria-hidden="true">
-                    <div class="modal-dialog custom-dialog-position" role="document">
-                      <div class="modal-content custom-modal-size">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Action items Of Pharmaceutical Product Recall Gonosunani  (Date: 2019-07-01)</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card">
-                              <div class="card-body">
-                                  <table>
-                                    <thead>
-                                      <tr>
-                                        <th>SL#</th>
-                                        <th>New Actions/Decisions</th>
-                                        <th>Responsibilities</th>
-                                        <th>Dateline</th>
-                                        <th>Status</th>
-                                      </tr>
-                                    </thead>
-                                      <tr>
-                                          <td>1.</td>
-                                          <td>ভলেন্টারি রিকল করলে ঔষূধ প্রশাশন কে জানাতে হবে</td>
-                                          <td>আমদানিকারি প্রতিষ্ঠান</td>
-                                          <td>2019-07-20</td>
-                                          <td>
-                                            <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>2.</td>
-                                          <td>বিভিন্ন মিডিয়ায় বিজ্ঞপ্তি প্রকাশ করতে হবে </td>
-                                          <td>আমদানিকারি প্রতিষ্ঠান</td>
-                                          <td>2019-07-03</td>
-                                          <td>
-                                            <button type="button" class="btn btn-danger btn-rounded btn-fw">Not Done</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>3.</td>
-                                          <td>পোস্ট মার্কেটিং সারভিলাঞ্চ সংক্রান্ত কার্যাদি পরিচালনা করার বাবস্থা থাকতে হবে</td>
-                                          <td>আমদানিকারি প্রতিষ্ঠান</td>
-                                          <td>2019-07-10</td>
-                                          <td>
-                                            <button type="button" class="btn btn-success btn-rounded btn-fw">Done</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>4.</td>
-                                          <td>মতামতের ভিত্তিতে গাইড লাইন টি চূড়ান্ত করতে হবে  </td>
-                                          <td>আমদানিকারি প্রতিষ্ঠান</td>
-                                          <td>2019-07-02</td>
-                                          <td>
-                                            <button type="button" class="btn btn-warning btn-rounded btn-fw">Attempted</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>5.</td>
-                                          <td>প্রডাক্ট রিকল ডিপো / ফার্মাসি / প্যাশেন্ট লেভেল পর্যন্ত থাকতে হবে</td>
-                                          <td>আমদানিকারি প্রতিষ্ঠান</td>
-                                          <td>2019-07-17</td>
-                                          <td>
-                                            <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
-                                          </td>
-                                      </tr>
-                                  </table>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {{-- End Modal --}}
-
-
                 </div>
             </div>
         </div>
@@ -258,6 +329,103 @@
     </footer>
     <script>
         $("#meeting_list").addClass("active");
+        var agenda = [];
+        var action_list = [];
+
+        function addAgenda()
+        {
+          var newAgenda = $('#agenda').val();
+          if(newAgenda){
+            agenda.push(newAgenda);
+            $('#agenda_item ul').empty();
+            $.each( agenda, function( key, value ) {
+              $("#agenda_item ul").append('<li id="agenda_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center">'+ value +'<span onclick="deleteAgenda('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+            $('#agenda').val('');
+          }
+        }
+
+        function deleteAgenda(delete_id)
+        {
+          agenda.splice(delete_id, 1);
+          $('#agenda_list_no_'+delete_id).remove();
+          $('#agenda_item ul').empty();
+          if(agenda.length){
+            $.each( agenda, function( key, value ) {
+              $("#agenda_item ul").append('<li id="agenda_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center">'+ value +'<span onclick="deleteAgenda('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+          }
+        }
+
+        function addActionList()
+        {
+          var title = $('#action_item').val();
+          var responsibilities = $('#responsibilities').val();
+          var deadline = $('#deadline').val();
+          if(title && responsibilities && deadline){
+            action_list.push({title: title, responsibilities: responsibilities, deadline: deadline});
+            $('#action_list ul').empty();
+            $.each( action_list, function( key, value ) {
+              $("#action_list ul").append('<li id="item_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.title + '</span><span class="second-row-action">' + value.responsibilities + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteActionList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+            $('#action_item').val('');
+            $('#responsibilities').val('');
+            $('#deadline').val('');
+          }
+        }
+
+        function deleteActionList(delete_id)
+        {
+          action_list.splice(delete_id, 1);
+          $('#item_list_no_'+delete_id).remove();
+          $('#action_list ul').empty();
+          if(action_list.length){
+            $.each( action_list, function( key, value ) {
+              $("#action_list ul").append('<li id="item_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.title + '</span><span class="second-row-action">' + value.responsibilities + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteActionList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+          }
+        }
+
+        function SubmitMettingDetails()
+        {
+          const file = document.getElementById('attachment');
+
+          let data = new FormData();
+          data.append('attachment', file.files[0]);
+          data.append('meeting_title', $('#meeting_title').val());
+          data.append('meeting_date', $('#meeting_date').val());
+          data.append('meeting_time', $('#meeting_time').val());
+          data.append('chairperson', $('#chairperson').val());
+          data.append('participants', $('#participants').val());
+          data.append('vanue', $('#vanue').val());
+          data.append('minutes_taken_by', $('#minutes_taken_by').val());
+          data.append('minutes_reviewed_by', $('#minutes_reviewed_by').val());
+          data.append('apologies', $('#apologies').val());
+          data.append('discussions', $('#discussions').val());
+          data.append('agenda', JSON.stringify(agenda));
+          data.append('action_list', JSON.stringify(action_list));
+          data.append('_token', '<?= csrf_token() ?>');
+
+          axios.post('/saveMeeting', data, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+          })
+          .then(function (response) {
+            Swal.fire({
+              position: 'top-end',
+              type: 'success',
+              title: 'The metting details has been saved!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            setTimeout(function() { location.reload();; }, 5000);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+
     </script>
     <style>
         table {
@@ -294,6 +462,19 @@
 
         .custom-dialog-position{
           left: -245px !important;
+        }
+        .add-butn{
+          cursor: pointer;
+        }
+
+        .first-row-action{
+          width: 40%;
+        }
+        .second-row-action{
+          width: 40%;
+        }
+        .third-row-action{
+          width: 20%;
         }
     </style>
 </div> 

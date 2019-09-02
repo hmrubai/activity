@@ -103,6 +103,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <br>
+                            <canvas id="newBarChart"></canvas>
+                        </div>
+                        <div class="col-lg-6">
+                            <br>
+                            <canvas id="newDoughnutChart"></canvas>
+                        </div>
+                    </div>
                     <?php 
                     }
                     else{
@@ -418,57 +428,31 @@
                         <thead>
                           <tr>
                             <th>SL#</th>
+                            <th>Meeting</th>
                             <th>New Actions/Decisions</th>
                             <th>Responsibilities</th>
                             <th>Dateline</th>
                             <th>Status</th>
                           </tr>
                         </thead>
+                        <?php 
+                        $sl = 1;
+                        foreach($self_tasks as $task): 
+                        ?>
                           <tr>
-                              <td>1.</td>
-                              <td>ভলেন্টারি রিকল করলে ঔষূধ প্রশাশন কে জানাতে হবে</td>
-                              <td>আমদানিকারি প্রতিষ্ঠান</td>
-                              <td>2019-07-20</td>
+                              <td>{{ $sl }}</td>
+                              <td>{{ $task->meeting_title }}</td>
+                              <td>{{ $task->title }}</td>
+                              <td>{{ $task->responsibilities }}</td>
+                              <td>{{ $task->deadline }}</td>
                               <td>
-                                <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
+                                <button type="button" onclick="ChangeStatus()" class="btn btn-primary btn-rounded btn-fw">{{ $task->status }}</button>
                               </td>
                           </tr>
-                          <tr>
-                              <td>2.</td>
-                              <td>বিভিন্ন মিডিয়ায় বিজ্ঞপ্তি প্রকাশ করতে হবে </td>
-                              <td>আমদানিকারি প্রতিষ্ঠান</td>
-                              <td>2019-07-03</td>
-                              <td>
-                                <button type="button" class="btn btn-danger btn-rounded btn-fw">Not Done</button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>3.</td>
-                              <td>পোস্ট মার্কেটিং সারভিলাঞ্চ সংক্রান্ত কার্যাদি পরিচালনা করার বাবস্থা থাকতে হবে</td>
-                              <td>আমদানিকারি প্রতিষ্ঠান</td>
-                              <td>2019-07-10</td>
-                              <td>
-                                <button type="button" class="btn btn-success btn-rounded btn-fw">Done</button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>4.</td>
-                              <td>মতামতের ভিত্তিতে গাইড লাইন টি চূড়ান্ত করতে হবে  </td>
-                              <td>আমদানিকারি প্রতিষ্ঠান</td>
-                              <td>2019-07-02</td>
-                              <td>
-                                <button type="button" class="btn btn-warning btn-rounded btn-fw">Attempted</button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>5.</td>
-                              <td>প্রডাক্ট রিকল ডিপো / ফার্মাসি / প্যাশেন্ট লেভেল পর্যন্ত থাকতে হবে</td>
-                              <td>আমদানিকারি প্রতিষ্ঠান</td>
-                              <td>2019-07-17</td>
-                              <td>
-                                <button type="button" class="btn btn-primary btn-rounded btn-fw">On Going</button>
-                              </td>
-                          </tr>
+                        <?php 
+                            $sl++;
+                        endforeach; 
+                        ?>
                       </table>
                     
                     <?php
@@ -490,6 +474,36 @@
     <script>
         $("#home").addClass("active");
     
+        function ChangeStatus(){
+            const { value: fruit } = Swal.fire({
+            title: 'Select Status',
+            input: 'select',
+            inputOptions: {
+                pending: 'PENDING',
+                ongoing: 'ON-GOING',
+                done: 'DONE',
+                removed: 'REMOVED'
+            },
+            inputPlaceholder: 'Select Status',
+            showCancelButton: true,
+                inputValidator: (value) => {
+                    return new Promise((resolve) => {
+                        resolve('You selected: ' + value)
+                    // if (value === 'oranges') {
+                    //     resolve()
+                    // } else {
+                    //     resolve('You need to select oranges :)')
+                    // }
+                    });
+                }
+            })
+
+            if (fruit) {
+            Swal.fire('You selected: ' + fruit)
+            }
+        }
+
+
         //Get GEO Location
         var x = document.getElementById("demo");
         function getLocation() {
@@ -616,6 +630,56 @@
             });
           }
         };
+
+        var ctx = document.getElementById('newBarChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Meetings',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45]
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+
+        doughnutData = {
+            datasets: [{
+                data: [10, 20, 30],
+                backgroundColor: ["#0074D9", "#FF4136", "#2ECC40"]
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: [
+                'Ongoing',
+                'Not Done',
+                'Done'
+            ]
+        };
+
+        var newctx = document.getElementById('newDoughnutChart').getContext('2d');
+
+        var myDoughnutChart = new Chart(newctx, {
+            type: 'doughnut',
+            data: doughnutData,
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+
     </script>
     <style>
         table {
