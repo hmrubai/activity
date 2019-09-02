@@ -70,4 +70,14 @@
         </div>
     </div>
 </div>
+<style> 
+.auth.auth-bg-1 {
+    background: #8a8a8a !important;
+}
+.btn-danger {
+    color: #fff;
+    background-color: #888888 !important;
+    border-color: #888888 !important;
+}
+</style>
 @endsection

@@ -18,6 +18,8 @@ class MeetingController extends Controller
         $meetings = Meeting::orderBy('id', 'desc')->get();
         foreach($meetings as $meeting):
             $attendees = [];
+            $assigned_attendee = [];
+
             $meeting_id = $meeting->id;
             $minutes_taken_by_id = $meeting->minutes_taken_by;
             $minutes_reviewed_by_id = $meeting->minutes_reviewed_by;
@@ -29,13 +31,19 @@ class MeetingController extends Controller
             $getActionItem = ActionItem::where('meeting_id', $meeting_id)->get();
             
             $attendee_list = explode(",", unserialize($meeting->attendees));
+            $assigned_attendee_list = explode(",", unserialize($meeting->assign_attendees_in_task));
             
             foreach($attendee_list as $attendee):
                 $getUser = User::select('name', 'designation')->where('id', $attendee)->get();
                 $attendees[] = array('name' => $getUser[0]->name, 'designation' => $getUser[0]->designation);
             endforeach;
 
-            $meetingInformation[] = array('meeting' => $meeting, 'taken_by_name' => $get_taken_by[0]->name,  'taken_by_designation' => $get_taken_by[0]->designation, 'reviewed_by_name' => $get_reviewed_by[0]->name, 'reviewed_by_designation' => $get_reviewed_by[0]->designation, 'attendee_list' => $attendees, 'agenda' => $getAgenda, 'action_item' => $getActionItem);
+            foreach($assigned_attendee_list as $attendee):
+                $getAttendeeUser = User::select('name', 'designation')->where('id', $attendee)->get();
+                $assigned_attendee[] = array('name' => $getAttendeeUser[0]->name, 'designation' => $getAttendeeUser[0]->designation);
+            endforeach;
+
+            $meetingInformation[] = array('meeting' => $meeting, 'taken_by_name' => $get_taken_by[0]->name,  'taken_by_designation' => $get_taken_by[0]->designation, 'reviewed_by_name' => $get_reviewed_by[0]->name, 'reviewed_by_designation' => $get_reviewed_by[0]->designation, 'attendee_list' => $attendees, 'assigned_attendee' => $assigned_attendee, 'agenda' => $getAgenda, 'action_item' => $getActionItem);
         endforeach;
 
         return view('meetingList', compact('users', 'meetingInformation'));
@@ -49,12 +57,14 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         $attendees = serialize($request->participants);
+        $assign_attendees = serialize($request->assign_attendees_in_task);
+
         $req_agenda = $request->agenda;
         $req_action_list = $request->action_list;
 
         $agenda = json_decode($req_agenda);
         $action_list = json_decode($req_action_list);
-        $attendee_list = explode(",", $request->participants);
+        $attendee_list = explode(",", $request->assign_attendees_in_task);
 
         $AddMeeting = new Meeting();
         $AddMeeting->meeting_title = $request->meeting_title;
@@ -65,6 +75,7 @@ class MeetingController extends Controller
         $AddMeeting->minutes_taken_by = $request->minutes_taken_by;
         $AddMeeting->minutes_reviewed_by = $request->minutes_reviewed_by;
         $AddMeeting->attendees = $attendees;
+        $AddMeeting->assign_attendees_in_task = $assign_attendees;
         $AddMeeting->apologies = $request->apologies;
         $AddMeeting->discussions = $request->discussions;
         if($request->attachment){

@@ -60,14 +60,18 @@
     </div>
     <style>
     .logo_body{
-        color: #fff;
+        color: #888;
         margin-left: -29px;
         margin-top: -241px;
         position: fixed;
     }
     .auth.auth-bg-1 {
-        background: #8c090a !important;
-        background-size: cover;
+        background: #e5e5e5 !important;
+    }
+    .btn-danger {
+        color: #fff;
+        background-color: #888888 !important;
+        border-color: #888888 !important;
     }
     </style>
 </body>

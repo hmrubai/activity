@@ -75,16 +75,24 @@
                                       </select>
                                     </div>
                                     <div class="form-group">
-                                      <label for="apologies">	Apologies</label>
-                                      <input type="text" class="form-control" name="apologies" id="apologies" placeholder="Apologies">
+                                      <label for="apologies">Apologies</label>
+                                      <textarea class="form-control" name="apologies" id="apologies" rows="3" ></textarea>
                                     </div>
                                     <div class="form-group">
-                                      <label for="discussions">	Discussions</label>
-                                      <input type="text" class="form-control" name="discussions" id="discussions" placeholder="Discussions">
+                                      <label for="discussions">Discussions</label>
+                                      <textarea class="form-control" name="discussions" id="discussions" rows="3" ></textarea>
                                     </div>
                                     <div class="form-group">
                                       <label for="attachment">Attach File</label>
                                       <input type="file" name="attachment" class="form-control-file" id="attachment">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="attendees_to_be_in_task">Assign attendees in Task</label>
+                                      <select class="form-control" name="attendees_to_be_in_task" id="attendees_to_be_in_task" multiple size="6">
+                                        <?php foreach($users as $user): ?>
+                                        <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
+                                      <?php endforeach; ?>
+                                      </select>
                                     </div>
                                     <div class="form-group">
                                       <div class="input-group">
@@ -151,6 +159,7 @@
                         foreach($meetingInformation as $meetingDetails):
                         $meetingInfo = $meetingDetails['meeting'];
                         $attendee_list = $meetingDetails['attendee_list'];
+                        $assigned_attendee = $meetingDetails['assigned_attendee'];
                         $agenda = $meetingDetails['agenda'];
                         $action_item = $meetingDetails['action_item'];
                         ?>
@@ -290,9 +299,51 @@
                                                         <td>{{ $meetingInfo->discussions }}</td>
                                                     </tr>
                                                     <tr>
+                                                      <td>Assigned attendees in Task</td>
+                                                      <td>
+                                                          <?php 
+                                                          $sl = 1;
+                                                          foreach($assigned_attendee as $attendee):
+                                                        ?>
+                                                          {{ $attendee['name'] }} ( {{ $attendee['designation'] }} )<br/>
+                                                        <?php 
+                                                          $sl++;
+                                                          endforeach; 
+                                                        ?>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td colspan="2">
+                                                        <table>
+                                                          <thead>
+                                                            <tr>
+                                                              <th>SL#</th>
+                                                              <th>New Actions/Decisions</th>
+                                                              <th>Responsibilities</th>
+                                                              <th>Dateline</th>
+                                                            </tr>
+                                                          </thead>
+                                                            <?php 
+                                                              $sl = 1;
+                                                              foreach($action_item as $list):
+                                                            ?>
+                                                              <tr>
+                                                                  <td>{{ $sl }}.</td>
+                                                                  <td>{{ $list->title }}</td>
+                                                                  <td>{{ $list->responsibilities }}</td>
+                                                                  <td>{{ $list->deadline }}</td>
+                                                              </tr>
+                                                            <?php 
+                                                              $sl++;
+                                                              endforeach; 
+                                                            ?>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>Attachment</td>
                                                         <td>
-                                                            <a href="files/meetings/<?php echo $meetingInfo->attachments; ?>" download="<?php echo $meetingInfo->attachments; ?>"><button type="button" class="btn btn-info">Download</button>
+                                                            <a href="files/meetings/<?php echo $meetingInfo->attachments; ?>" download="<?php echo $meetingInfo->attachments; ?>"><button type="button" class="btn btn-warning">Download</button>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -397,6 +448,7 @@
           data.append('meeting_time', $('#meeting_time').val());
           data.append('chairperson', $('#chairperson').val());
           data.append('participants', $('#participants').val());
+          data.append('assign_attendees_in_task', $('#attendees_to_be_in_task').val());
           data.append('vanue', $('#vanue').val());
           data.append('minutes_taken_by', $('#minutes_taken_by').val());
           data.append('minutes_reviewed_by', $('#minutes_reviewed_by').val());
@@ -419,7 +471,7 @@
               showConfirmButton: false,
               timer: 1500
             });
-            setTimeout(function() { location.reload();; }, 5000);
+            //setTimeout(function() { location.reload();; }, 5000);
           })
           .catch(function (error) {
             console.log(error);

@@ -446,7 +446,13 @@
                               <td>{{ $task->responsibilities }}</td>
                               <td>{{ $task->deadline }}</td>
                               <td>
-                                <button type="button" onclick="ChangeStatus()" class="btn btn-primary btn-rounded btn-fw">{{ $task->status }}</button>
+                                  <?php 
+                                  if($task->status == "PENDING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-default btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "ON-GOING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-primary btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "DONE"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-success btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "REMOVED"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  ?>
+                                
                               </td>
                           </tr>
                         <?php 
@@ -474,21 +480,39 @@
     <script>
         $("#home").addClass("active");
     
-        function ChangeStatus(){
+        function ChangeStatus(status)
+        {
+            if(status === 'PENDING'){
+                var optionsData = {
+                    ongoing: 'ON-GOING',
+                    done: 'DONE',
+                    removed: 'REMOVED'
+                };
+            }else if(status === 'ON-GOING'){
+                var optionsData = {
+                    done: 'DONE',
+                    removed: 'REMOVED'
+                };
+            }else if(status === 'DONE'){
+                var optionsData = {
+                    removed: 'REMOVED'
+                };
+            }
+
+            
+
             const { value: fruit } = Swal.fire({
             title: 'Select Status',
             input: 'select',
-            inputOptions: {
-                pending: 'PENDING',
-                ongoing: 'ON-GOING',
-                done: 'DONE',
-                removed: 'REMOVED'
-            },
+            inputOptions: optionsData,
             inputPlaceholder: 'Select Status',
             showCancelButton: true,
                 inputValidator: (value) => {
+
                     return new Promise((resolve) => {
-                        resolve('You selected: ' + value)
+                        resolve();
+                        console.log(status);
+                        //resolve('You selected: ' + value);
                     // if (value === 'oranges') {
                     //     resolve()
                     // } else {
