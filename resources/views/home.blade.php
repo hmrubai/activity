@@ -89,18 +89,18 @@
                     <div class="row">
                         <div class="col-lg-4">
                             Current Location <br/><br/>
-                            <div id="map" style="width: 400px; height: 390px;"></div>
+                            <div id="map" style="width: 400px; height: 300px;"></div>
                         </div>
                         <div class="col-lg-8">
                             <div class="chart-container" style="position: relative; height:40vh; width:49vw">
                                 <canvas id="myChart" style="height:40vh; width:49vw"></canvas>
                             </div>
-                            <div style="background-color: #d9edfc; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
+                            {{-- <div style="background-color: #d9edfc; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
                                 <p>Active User</p>
                             </div>
                             <div style="background-color: #ffe1e6; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
                                 <p>Inactive User</p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="row">
@@ -439,7 +439,13 @@
                         $sl = 1;
                         foreach($self_tasks as $task): 
                         ?>
-                          <tr>
+                          <tr
+                            <?php
+                                if (date('Y-m-d') > $task->deadline && $task->status != "DONE"){
+                                    ?> class="background_tr" <?php
+                                }
+                            ?>
+                          >
                               <td>{{ $sl }}</td>
                               <td>{{ $task->meeting_title }}</td>
                               <td>{{ $task->title }}</td>
@@ -447,10 +453,10 @@
                               <td>{{ $task->deadline }}</td>
                               <td>
                                   <?php 
-                                  if($task->status == "PENDING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-default btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                  elseif($task->status == "ON-GOING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-primary btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                  elseif($task->status == "DONE"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-success btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                  elseif($task->status == "REMOVED"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>')" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  if($task->status == "PENDING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "ON-GOING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-warning btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "DONE"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-success btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                  elseif($task->status == "REMOVED"){ ?> <button type="button" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
                                   ?>
                                 
                               </td>
@@ -469,6 +475,109 @@
             </div>
         </div>
     </div>
+    <?php if(Auth::user()->user_type == "ADMIN"){ ?>
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <?php
+                            foreach($staff_task_count as $staff_task):
+                            $staff_task_items = $staff_task['task_list']; 
+                            ?>
+                            <div class="col-lg-12">
+                                <h5>{{ $staff_task['name'] }}, {{ $staff_task['designation'] }} </h5> 
+                                <p>Total Task: {{ $staff_task['all_task'] }}, Done: <span class="text-success">{{ $staff_task['done'] }} (<?php echo $staff_task['done_percent']; ?>%)<i class="mdi mdi-arrow-up"></i></span>, On-Going: <span class="text-warning">{{ $staff_task['ongoing'] }} (<?php echo $staff_task['ongoing_percent']; ?>%)</span>, Pending: <span class="text-danger">{{ $staff_task['pending'] }} (<?php echo $staff_task['pending_percent']; ?>%)<i class="mdi mdi-arrow-down"></i></span></p>
+                                <a data-toggle="modal" data-target="#staffActionItem_<?php echo $staff_task['user_id']; ?>">
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width:<?php echo $staff_task['done_percent']; ?>%" aria-valuemax="<?php echo $staff_task['all_task']; ?>">Done</div>
+                                        <div class="progress-bar bg-warning progress-bar-striped" role="progressbar" style="width:<?php echo $staff_task['ongoing_percent']; ?>%">On-Going</div>
+                                        <div class="progress-bar bg-danger progress-bar-striped" role="progressbar" style="width:<?php echo $staff_task['pending_percent']; ?>%">Pending</div>
+                                    </div>
+                                </a>
+                                <br/>
+                                {{-- Start Action item Modal --}}
+                                <div class="modal fade" id="staffActionItem_<?php echo $staff_task['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="staffActionItem_<?php echo $staff_task['user_id']; ?>" aria-hidden="true">
+                                    <div class="modal-dialog custom-dialog-position" role="document">
+                                    <div class="modal-content custom-modal-size">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title">Task List of {{ $staff_task['name'] }}, {{ $staff_task['designation'] }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                            <div class="card-body">
+                                                <table>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>SL#</th>
+                                                        <th>Meeting</th>
+                                                        <th>New Actions/Decisions</th>
+                                                        <th>Responsibilities</th>
+                                                        <th>Dateline</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <?php 
+                                                    if(!sizeof($staff_task_items)){
+                                                        ?> 
+                                                        <tr>
+                                                            <td colspan="6">No Task Found</td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                    $sl = 1;
+                                                    foreach($staff_task_items as $task):
+                                                    ?>
+                                                    <tr
+                                                        <?php
+                                                            if (date('Y-m-d') > $task->deadline && $task->status != "DONE"){
+                                                                ?> class="background_tr" <?php
+                                                            }
+                                                        ?>
+                                                        >
+                                                        <td>{{ $sl }}</td>
+                                                        <td>{{ $task->meeting_title }}</td>
+                                                        <td>{{ $task->title }}</td>
+                                                        <td>{{ $task->responsibilities }}</td>
+                                                        <td>{{ $task->deadline }}</td>
+                                                        <td>
+                                                            <?php 
+                                                            if($task->status == "PENDING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                                            elseif($task->status == "ON-GOING"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-warning btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                                            elseif($task->status == "DONE"){ ?> <button type="button" onclick="ChangeStatus('<?php echo $task->status; ?>', <?php echo $task->id; ?>)" class="btn btn-success btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                                            elseif($task->status == "REMOVED"){ ?> <button type="button" class="btn btn-default btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
+                                                            ?>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <?php 
+                                                        $sl++;
+                                                    endforeach; 
+                                                    ?>
+                                                </table>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                {{-- End Action item Modal --}}
+                            </div>
+                            <?php 
+                            endforeach;
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
     <footer class="footer">
         <div class="container-fluid clearfix">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="#"
@@ -480,7 +589,7 @@
     <script>
         $("#home").addClass("active");
     
-        function ChangeStatus(status)
+        function ChangeStatus(status, id)
         {
             if(status === 'PENDING'){
                 var optionsData = {
@@ -499,8 +608,6 @@
                 };
             }
 
-            
-
             const { value: fruit } = Swal.fire({
             title: 'Select Status',
             input: 'select',
@@ -510,14 +617,28 @@
                 inputValidator: (value) => {
 
                     return new Promise((resolve) => {
-                        resolve();
-                        console.log(status);
-                        //resolve('You selected: ' + value);
-                    // if (value === 'oranges') {
-                    //     resolve()
-                    // } else {
-                    //     resolve('You need to select oranges :)')
-                    // }
+                        
+                        var data = {
+                            task_id: id,
+                            status: value,
+                            '_token': '<?= csrf_token() ?>'
+                        }
+                        axios.post('/updateTaskStatus', data)
+                        .then(function (response) {
+                            Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Status has been updated!',
+                            showConfirmButton: false,
+                            timer: 1500
+                            });
+                            setTimeout(function() { location.reload();; }, 3000);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        console.log(value, id);
+                        //resolve();
                     });
                 }
             })
@@ -599,26 +720,16 @@
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [formatted_date, formatted_date],
+                    labels: [<?php 
+                        foreach($all_dates as $single_date): ?> 
+                        new Date('<?php echo $single_date; ?>').getDate() + "-" + months[new Date('<?php echo $single_date; ?>').getMonth()] + "-" + new Date('<?php echo $single_date; ?>').getFullYear()
+                        <?php echo ','; endforeach; 
+                        ?>],
                     datasets: [{
-                        label: 'Today\'s user activities',
-                        data: [<?php echo $inactive_staff; ?>, <?php echo $active_stuff; ?>],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
+                        label: 'User activities',
+                        data: [<?php foreach($all_activity_count as $activity): echo $activity.',';  endforeach; ?>],
+                        backgroundColor: ["#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", ],
+                        borderColor: ["#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4", "#5d62b4"],
                         borderWidth: 1
                     }]
                 },
@@ -662,29 +773,25 @@
 
             // The data for our dataset
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 datasets: [{
                     label: 'Meetings',
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    backgroundColor: '#b50026',
                     borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45]
+                    data: [<?php foreach($count_meetings as $meeting): echo $meeting.',';  endforeach; ?>]
                 }]
             },
-
-            // Configuration options go here
             options: {}
         });
 
         doughnutData = {
             datasets: [{
-                data: [10, 20, 30],
-                backgroundColor: ["#0074D9", "#FF4136", "#2ECC40"]
+                data: [<?php foreach($task_count as $task): echo $task.',';  endforeach; ?>],
+                backgroundColor: ["#ffcd56", "#b50026", "#029e3f"]
             }],
-
-            // These labels appear in the legend and in the tooltips when hovering different arcs
             labels: [
                 'Ongoing',
-                'Not Done',
+                'Pending',
                 'Done'
             ]
         };
@@ -734,11 +841,21 @@
         }
 
         .custom-modal-size{
-            width: 700px !important;
+            width: 1000px !important;
         }
 
         .custom-dialog-position{
-            left: -100px !important;
+            left: -230px !important;
+        }
+
+        .background_tr{
+            background-color: #ff8686 !important;
+        }
+        .progress {
+            height: 20px !important;
+        }
+        .progress .progress-bar {
+            border-radius: 0px !important;
         }
     </style>
 </div> 

@@ -17,5 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getAllList', 'DailyActivityController@getAllList')->name('getAllList');
     Route::post('/saveDailyActivity', 'DailyActivityController@saveDailyActivity')->name('saveDailyActivity');
     Route::get('/meetingList', 'MeetingController@index')->name('meetingList');
+    Route::get('/getAllOfficer', 'HomeController@getAllOfficer')->name('getAllOfficer');
     Route::post('/saveMeeting', 'MeetingController@store')->name('saveMeeting');
+    Route::post('/updateTaskStatus', 'MeetingController@updateTaskStatus')->name('updateTaskStatus');
 });

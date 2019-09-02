@@ -49,8 +49,30 @@ class MeetingController extends Controller
         return view('meetingList', compact('users', 'meetingInformation'));
     }
 
-    public function create()
+    public function updateTaskStatus(Request $request)
     {
+        $task_id = $request->task_id;
+        $status = $request->status;
+
+        if($status == 'done'){
+            $updated_status = "DONE";
+        }elseif($status == 'ongoing'){
+            $updated_status = "ON-GOING";
+        }elseif($status == 'removed'){
+            $updated_status = "REMOVED";
+        }else{
+            $updated_status = "PENDING";
+        }
+
+        $tsakInfo = TaskList::find($task_id);
+        $tsakInfo->status = $updated_status;
+        $tsakInfo->save();
+
+        return response()->json(array(
+            'data' => 'Successful',
+            'status' => 'Successful',
+            'message' => 'Status has been updated successfully!'
+        ));
         
     }
 
