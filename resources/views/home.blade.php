@@ -756,6 +756,7 @@
     </footer>
     <script>
         $("#home").addClass("active");
+        $("#home_side_menu").addClass("active");
     
         function ChangeStatus(status, id)
         {

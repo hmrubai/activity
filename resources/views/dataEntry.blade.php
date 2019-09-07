@@ -553,6 +553,7 @@
         getLocation();
 
         $("#entry_activity").addClass("active");
+        $("#add_activity_side_menu").addClass("active");
 
         function changeValueForm(form_name){
           if(form_name === 'Mobile_Court') {

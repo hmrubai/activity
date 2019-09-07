@@ -315,6 +315,7 @@
     </footer>
     <script>
         $("#activity_list").addClass("active");
+        
         function setGEOLocation(map_id, lat, long){
           if(lat){
             var point = new google.maps.LatLng(lat, long);

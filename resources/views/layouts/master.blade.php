@@ -144,7 +144,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="home_side_menu">
                         <a class="nav-link" href="{{ route('home') }}">
                             <i class="menu-icon mdi mdi-home"></i>
                             <span class="menu-title">Home</span>
@@ -152,7 +152,7 @@
                     </li>
                     <div class="dropdown-divider"></div>
                     <?php if(Auth::user()->user_type == "ADMIN" || Auth::user()->user_type == "MEETING"){ ?>
-                        <li class="nav-item">
+                        <li class="nav-item" id="assign_task_list">
                             <a class="nav-link" href="{{ route('assignTask') }}">
                                 <i class="menu-icon mdi mdi-note-plus"></i>
                                 <span class="menu-title">Assign Task</span>
@@ -160,10 +160,17 @@
                         </li>
                     <?php } ?>
                     <div class="dropdown-divider"></div>
-                    <li class="nav-item">
+                    <li class="nav-item" id="add_activity_side_menu">
                         <a class="nav-link" href="{{ route('entryActivity') }}">
                             <i class="menu-icon mdi mdi-note-plus"></i>
                             <span class="menu-title">Entry activity</span>
+                        </a>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <li class="nav-item" id="forum">
+                        <a class="nav-link" href="{{ route('forum') }}">
+                            <i class="menu-icon mdi mdi-note-plus"></i>
+                            <span class="menu-title">Forum</span>
                         </a>
                     </li>
                 </ul>

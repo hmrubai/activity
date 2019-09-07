@@ -6,8 +6,8 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body"> 
-                  Assign Task
-                  <button type="button"  data-toggle="modal" data-target="#AssignTask" class="btn btn-secondary float-right">Assign Task</button>
+                  Disscussion Board
+                  <button type="button"  data-toggle="modal" data-target="#AssignTask" class="btn btn-secondary float-right">New Post</button>
                   {{-- Start Modal --}}
                   <div class="modal fade" id="AssignTask" tabindex="-1" role="dialog" aria-labelledby="AssignTask" aria-hidden="true">
                       <div class="modal-dialog custom-dialog-position" role="document">
@@ -72,34 +72,7 @@
                     </div>
                     {{-- End Modal --}}
                   <br/><br/>
-                  <table>
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Task</th>
-                              <th>Deadline</th>
-                              <th>Status</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        <?php foreach($tasks as $task): ?>
-                        <tr>
-                            <td>{{ $task->name }} <br> {{ $task->designation }}</td>
-                            <td>{{ $task->title }}</td>
-                            <td>{{ $task->deadline }}</td>
-                            <td>
-                                <?php 
-                                if($task->status == "PENDING"){ ?> <button type="button" class="btn btn-danger btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                elseif($task->status == "ON-GOING"){ ?> <button type="button" class="btn btn-warning btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                elseif($task->status == "DONE"){ ?> <button type="button" class="btn btn-success btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                elseif($task->status == "REMOVED"){ ?> <button type="button" class="btn btn-default btn-rounded btn-fw">{{ $task->status }}</button> <?php } 
-                                ?>
-                            </td>
-
-                        </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                  </table>
+                  
                 </div>
             </div>
         </div>
@@ -113,7 +86,7 @@
         </div>
     </footer>
     <script>
-        $("#assign_task_list").addClass("active");
+        $("#forum").addClass("active");
 
         var task_list = [];
 

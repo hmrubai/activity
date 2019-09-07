@@ -21,5 +21,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/saveMeeting', 'MeetingController@store')->name('saveMeeting');
     Route::post('/updateTaskStatus', 'MeetingController@updateTaskStatus')->name('updateTaskStatus');
     Route::get('/assignTask', 'MeetingController@assignTask')->name('assignTask');
+    Route::get('/forum', 'MeetingController@assignTask')->name('forum');
     Route::post('/assigntaskToEmployee', 'MeetingController@assigntaskToEmployee')->name('assigntaskToEmployee');
 });
