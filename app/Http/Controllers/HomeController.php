@@ -28,6 +28,8 @@ class HomeController extends Controller
             $count_meetings[] = Meeting::whereBetween('date_time',[$first_date, $last_date])->get()->count();
         endforeach;
 
+        $total_meetings = Meeting::orderBy('id', 'desc')->get()->count();
+
         //Activity Data
         $previous_month = date("Y-m-d",strtotime("-2 month"));
         $date_from = strtotime($previous_month);
@@ -81,7 +83,12 @@ class HomeController extends Controller
             ->where('user_id', $user_id)
             ->get();
 
+            if(Auth::id() == $user_id){
+                $looged_user_data[] = array('user_id' => $user_id ,'name' => $staff->name, 'designation' => $staff->designation, 'all_task' => $all_task, 'pending' => $staff_pending, 'ongoing' => $staff_ongoing, 'done' => $staff_done, 'pending_percent' => $pending_task_in_parcentage, 'ongoing_percent' => $ongoing_task_in_parcentage, 'done_percent' => $done_task_in_parcentage);
+            }
+            
             $staff_task_count[] = array('user_id' => $user_id ,'name' => $staff->name, 'designation' => $staff->designation, 'all_task' => $all_task, 'pending' => $staff_pending, 'ongoing' => $staff_ongoing, 'done' => $staff_done, 'pending_percent' => $pending_task_in_parcentage, 'ongoing_percent' => $ongoing_task_in_parcentage, 'done_percent' => $done_task_in_parcentage, 'task_list' => $staff_tasks);
+        
         endforeach;
 
         $count_daily_activities = DailyActivity::whereDate('created_at', date("Y-m-d"))->get()->count();
@@ -89,7 +96,7 @@ class HomeController extends Controller
         $count_activities = DailyActivity::all()->count();
         $user = User::all()->count();
         $inactive_staff = $user - $active_stuff;
-        return view('home', compact('all_dates', 'all_activity_count', 'count_meetings', 'task_count', 'staff_task_count', 'count_daily_activities', 'count_activities', 'activities', 'user', 'active_stuff', 'inactive_staff', 'self_tasks'));
+        return view('home', compact('all_dates', 'all_activity_count', 'total_meetings', 'count_meetings', 'task_count', 'staff_task_count', 'looged_user_data', 'count_daily_activities', 'count_activities', 'activities', 'user', 'active_stuff', 'inactive_staff', 'self_tasks'));
     }
 
     public function entryDailyActivity(){

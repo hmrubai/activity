@@ -6,7 +6,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body"> 
-                  LIST OF OFFICERS OF DGDA
+                  Assign Task
                   <br/><br/>
                   <table>
                       <thead>
@@ -20,24 +20,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                        <?php 
-                        foreach ($all_officer as $officer):
-                        ?>
-                        <tr>
-                            <td>
-                                <div class="profile-image">
-                                  <img src="images/faces/user.png" class="profile-image" alt="profile image">
-                                </div>
-                            </td>
-                            <td>{{ $officer->name }}</td>
-                            <td>{{ $officer->designation }}</td>
-                            <td>{{ $officer->duty_station }}</td>
-                            <td><i class="mdi mdi-email"></i> {{ $officer->email }}</td>
-                            <td><i class="mdi mdi-cellphone-basic"></i> {{ $officer->mobile }}</td>
-                          </tr>
-                        <?php 
-                        endforeach; 
-                        ?>
+                        
                         
                       </tbody>
                   </table>

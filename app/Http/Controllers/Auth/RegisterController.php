@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'mobile' => 'required|string|max:255',
             'designation' => 'string|max:255',
             'rank' => 'numeric|min:1',
+            'duty_station' => 'string|max:255',
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -72,6 +73,7 @@ class RegisterController extends Controller
             'mobile' => $data['mobile'],
             'designation' => $data['designation'],
             'rank' =>$data['rank'],
+            'duty_station' =>$data['duty_station'],
             'password' => Hash::make($data['password']),
         ]);
     }

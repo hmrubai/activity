@@ -68,6 +68,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="duty_station" class="col-md-4 col-form-label text-md-right">{{ __('Duty Station') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="duty_station" type="text" class="form-control @error('duty_station') is-invalid @enderror" name="duty_station" value="{{ old('duty_station') }}" required autocomplete="duty_station">
+
+                                @error('duty_station')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="rank" class="col-md-4 col-form-label text-md-right">{{ __('SL#') }}</label>
 
                             <div class="col-md-6">

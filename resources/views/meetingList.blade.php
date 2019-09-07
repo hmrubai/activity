@@ -87,13 +87,29 @@
                                       <input type="file" name="attachment" class="form-control-file" id="attachment">
                                     </div>
                                     <div class="form-group">
-                                      <label for="attendees_to_be_in_task">Assign attendees in Task</label>
-                                      <select class="form-control" name="attendees_to_be_in_task" id="attendees_to_be_in_task" multiple size="6">
-                                        <?php foreach($users as $user): ?>
-                                        <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
-                                      <?php endforeach; ?>
-                                      </select>
+                                      <div class="input-group">
+                                        <input type="text" name="task_item" id="task_item" class="form-control" placeholder="Task Item" aria-label="Task Item" aria-describedby="colored-addon3">
+                                        
+                                        <select class="form-control" name="attendees_to_be_in_task" id="attendees_to_be_in_task" multiple>
+                                          <?php foreach($users as $user): ?>
+                                            <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
+                                          <?php endforeach; ?>
+                                        </select>
+                                        
+                                        <input type="date" name="task_deadline" id="task_deadline" class="form-control" placeholder="Deadline" aria-label="Deadline" aria-describedby="colored-addon3">
+                                        <div class="input-group-append bg-primary border-primary">
+                                          <span onclick="addTaskList()" class="input-group-text bg-transparent add-butn">
+                                            <i class="mdi mdi-clipboard-plus text-white"></i>
+                                          </span>
+                                        </div>
+                                      </div>
                                     </div>
+
+                                    <div id="task_item_list">
+                                      <ul class="list-group">
+                                      </ul>
+                                    </div>
+                                    <br/>
                                     <div class="form-group">
                                       <div class="input-group">
                                         <input type="text" name="agenda" id="agenda"  class="form-control" placeholder="Agenda" aria-label="Agenda" aria-describedby="colored-addon3">
@@ -299,20 +315,6 @@
                                                         <td>{{ $meetingInfo->discussions }}</td>
                                                     </tr>
                                                     <tr>
-                                                      <td>Assigned attendees in Task</td>
-                                                      <td>
-                                                          <?php 
-                                                          $sl = 1;
-                                                          foreach($assigned_attendee as $attendee):
-                                                        ?>
-                                                          {{ $attendee['name'] }} ( {{ $attendee['designation'] }} )<br/>
-                                                        <?php 
-                                                          $sl++;
-                                                          endforeach; 
-                                                        ?>
-                                                      </td>
-                                                    </tr>
-                                                    <tr>
                                                       <td colspan="2">
                                                         <table>
                                                           <thead>
@@ -382,6 +384,7 @@
         $("#meeting_list").addClass("active");
         var agenda = [];
         var action_list = [];
+        var task_list = [];
 
         function addAgenda()
         {
@@ -425,6 +428,22 @@
           }
         }
 
+        function addTaskList(){
+          var task = $('#task_item').val();
+          var attendees = $('#attendees_to_be_in_task').val();
+          var task_deadline = $('#task_deadline').val();
+          if(task && attendees && deadline){
+            task_list.push({task: task, attendees: attendees, deadline: task_deadline});
+            $('#task_item_list ul').empty();
+            $.each( task_list, function( key, value ) {
+              $("#task_item_list ul").append('<li id="task_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.task + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteTaskList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+            $('#task_item').val('');
+            $('#attendees_to_be_in_task').val('');
+            $('#task_deadline').val('');
+          }
+        }
+
         function deleteActionList(delete_id)
         {
           action_list.splice(delete_id, 1);
@@ -433,6 +452,18 @@
           if(action_list.length){
             $.each( action_list, function( key, value ) {
               $("#action_list ul").append('<li id="item_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.title + '</span><span class="second-row-action">' + value.responsibilities + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteActionList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
+            });
+          }
+        }
+
+        function deleteTaskList(delete_id)
+        {
+          task_list.splice(delete_id, 1);
+          $('#task_list_no_'+delete_id).remove();
+          $('#task_item_list ul').empty();
+          if(task_list.length){
+            $.each( task_list, function( key, value ) {
+              $("#task_item_list ul").append('<li id="task_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.task + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteTaskList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
             });
           }
         }
@@ -448,7 +479,6 @@
           data.append('meeting_time', $('#meeting_time').val());
           data.append('chairperson', $('#chairperson').val());
           data.append('participants', $('#participants').val());
-          data.append('assign_attendees_in_task', $('#attendees_to_be_in_task').val());
           data.append('vanue', $('#vanue').val());
           data.append('minutes_taken_by', $('#minutes_taken_by').val());
           data.append('minutes_reviewed_by', $('#minutes_reviewed_by').val());
@@ -456,6 +486,7 @@
           data.append('discussions', $('#discussions').val());
           data.append('agenda', JSON.stringify(agenda));
           data.append('action_list', JSON.stringify(action_list));
+          data.append('task_list', JSON.stringify(task_list));
           data.append('_token', '<?= csrf_token() ?>');
 
           axios.post('/saveMeeting', data, {
@@ -471,7 +502,7 @@
               showConfirmButton: false,
               timer: 1500
             });
-            //setTimeout(function() { location.reload();; }, 5000);
+            setTimeout(function() { location.reload();; }, 5000);
           })
           .catch(function (error) {
             console.log(error);

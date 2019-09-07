@@ -20,4 +20,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getAllOfficer', 'HomeController@getAllOfficer')->name('getAllOfficer');
     Route::post('/saveMeeting', 'MeetingController@store')->name('saveMeeting');
     Route::post('/updateTaskStatus', 'MeetingController@updateTaskStatus')->name('updateTaskStatus');
+    Route::get('/assignTask', 'MeetingController@assignTask')->name('assignTask');
 });

@@ -144,13 +144,21 @@
                             </div>
                         </div>
                     </li>
-                    <div class="dropdown-divider"></div>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">
                             <i class="menu-icon mdi mdi-home"></i>
                             <span class="menu-title">Home</span>
                         </a>
                     </li>
+                    <div class="dropdown-divider"></div>
+                    <?php if(Auth::user()->user_type == "ADMIN" || Auth::user()->user_type == "MEETING"){ ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('assignTask') }}">
+                                <i class="menu-icon mdi mdi-note-plus"></i>
+                                <span class="menu-title">Assign Task</span>
+                            </a>
+                        </li>
+                    <?php } ?>
                     <div class="dropdown-divider"></div>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('entryActivity') }}">

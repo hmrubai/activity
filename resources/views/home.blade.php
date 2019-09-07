@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="nav-link"><p class="text-muted mt-3 mb-0">
+                    <a href="/getAllList" class="nav-link"><p class="text-muted mt-3 mb-0">
                         <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> Show Daily Activities </p></a>
                 </div>
             </div>
@@ -71,16 +71,185 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Meeting Minutes</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $total_meetings }}</h3>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="nav-link"> <p class="text-muted mt-3 mb-0"><i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Meeting Minutes </p></a>
+                    <a href="/meetingList" class="nav-link"> <p class="text-muted mt-3 mb-0"><i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Meeting Minutes </p></a>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- looged_user_data -->
+    <div class="row">
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-success mr-2"></div>
+                                <p class="mb-0">Total Task</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['all_task']; ?> Tasks <i class="mdi mdi-clipboard-text"></i></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $looged_user_data[0]['done_percent']; ?>%"></div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo $looged_user_data[0]['ongoing_percent']; ?>%"></div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo $looged_user_data[0]['pending_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-danger mr-2"></div>
+                                <p class="mb-0">Done</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['done']; ?> Tasks <span class="text-success user-progress-card-text">(<?php echo $looged_user_data[0]['done_percent']; ?>%)<i class="mdi mdi-arrow-up"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $looged_user_data[0]['done_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-success mr-2"></div>
+                                <p class="mb-0">Ongoing</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['ongoing']; ?> Tasks <span class="text-warning user-progress-card-text">(<?php echo $looged_user_data[0]['ongoing_percent']; ?>%)<i class="mdi mdi-arrow-down"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo $looged_user_data[0]['ongoing_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-danger mr-2"></div>
+                                <h6 class="mb-0">Pending</h6>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['pending']; ?> Tasks <span class="text-danger user-progress-card-text">(<?php echo $looged_user_data[0]['pending_percent']; ?>%)<i class="mdi mdi-arrow-down"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo $looged_user_data[0]['pending_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php }else{ ?> 
+    <!-- looged_user_data -->
+    <div class="row">
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-success mr-2"></div>
+                                <p class="mb-0">Total Task</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['all_task']; ?> Tasks <i class="mdi mdi-clipboard-text"></i></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $looged_user_data[0]['done_percent']; ?>%"></div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo $looged_user_data[0]['ongoing_percent']; ?>%"></div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo $looged_user_data[0]['pending_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-danger mr-2"></div>
+                                <p class="mb-0">Done</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['done']; ?> Tasks <span class="text-success user-progress-card-text">(<?php echo $looged_user_data[0]['done_percent']; ?>%)<i class="mdi mdi-arrow-up"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $looged_user_data[0]['done_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-success mr-2"></div>
+                                <p class="mb-0">Ongoing</p>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['ongoing']; ?> Tasks <span class="text-warning user-progress-card-text">(<?php echo $looged_user_data[0]['ongoing_percent']; ?>%)<i class="mdi mdi-arrow-down"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo $looged_user_data[0]['ongoing_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center pb-2 user-grid-inline">
+                                <div class="dot-indicator bg-danger mr-2"></div>
+                                <h6 class="mb-0">Pending</h6>
+                            </div>
+                            <h6 class="font-weight-semibold user-grid-inline float-right"><?php echo $looged_user_data[0]['pending']; ?> Tasks <span class="text-danger user-progress-card-text">(<?php echo $looged_user_data[0]['pending_percent']; ?>%)<i class="mdi mdi-arrow-down"></i></span></span></h6>
+                            <br><br>
+                            <div class="progress progress-md user-progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo $looged_user_data[0]['pending_percent']; ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
 <?php } ?>
+
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -95,12 +264,6 @@
                             <div class="chart-container" style="position: relative; height:40vh; width:49vw">
                                 <canvas id="myChart" style="height:40vh; width:49vw"></canvas>
                             </div>
-                            {{-- <div style="background-color: #d9edfc; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
-                                <p>Active User</p>
-                            </div>
-                            <div style="background-color: #ffe1e6; width: 150px; text-align: center; margin: 20px; padding-top: 13px; display: inline-block;">
-                                <p>Inactive User</p>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="row">
@@ -481,6 +644,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-lg-12">
+                                <h3>Progress</h3>
+                                <hr>
+                                <br>
+                            </div>
                             <?php
                             foreach($staff_task_count as $staff_task):
                             $staff_task_items = $staff_task['task_list']; 
@@ -648,21 +816,20 @@
             }
         }
 
-
         //Get GEO Location
-        var x = document.getElementById("demo");
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
+        // var x = document.getElementById("demo");
+        // function getLocation() {
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(showPosition);
+        //     } else { 
+        //         x.innerHTML = "Geolocation is not supported by this browser.";
+        //     }
+        // }
 
-        function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude + 
-            "<br>Longitude: " + position.coords.longitude;
-        }
+        // function showPosition(position) {
+        //     x.innerHTML = "Latitude: " + position.coords.latitude + 
+        //     "<br>Longitude: " + position.coords.longitude;
+        // }
         //end of GEO Location
 
         //get location via google map
@@ -672,16 +839,15 @@
                                                 position.coords.longitude);
                 // Initialize the Google Maps API v3
                 var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: point,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                    zoom: 15,
+                    center: point,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
                 // Place a marker
                 new google.maps.Marker({
-                position: point,
-                map: map
+                    position: point,
+                    map: map
                 });
-                
                 
                 google.maps.event.addListener(map, 'click', function (event) {
                     //alert(event.latLng);          
@@ -689,22 +855,8 @@
                         'latLng': event.latLng
                     }, function (results, status) {
                         console.log(results);
-                        // if (status ==
-                        //     google.maps.GeocoderStatus.OK) {
-                        //     if (results[1]) {
-                        //         alert(results[1].formatted_address);
-                        //     } else {
-                        //         alert('No results found');
-                        //     }
-                        // } else {
-                        //     alert('Geocoder failed due to: ' + status);
-                        // }
                     });
                 }); 
-                //google.maps.event.addDomListener(window, 'load', initialize);
-
-
-
             }); 
         } 
         else {
@@ -784,7 +936,7 @@
             options: {}
         });
 
-        doughnutData = {
+        var doughnutData = {
             datasets: [{
                 data: [<?php foreach($task_count as $task): echo $task.',';  endforeach; ?>],
                 backgroundColor: ["#ffcd56", "#b50026", "#029e3f"]
@@ -801,14 +953,14 @@
         var myDoughnutChart = new Chart(newctx, {
             type: 'doughnut',
             data: doughnutData,
-            options: {
-                scales: {
-                    xAxes: [{
-                        type: 'linear',
-                        position: 'bottom'
-                    }]
-                }
-            }
+            // options: {
+            //     scales: {
+            //         xAxes: [{
+            //             type: 'linear',
+            //             position: 'bottom'
+            //         }]
+            //     }
+            // }
         });
 
     </script>
@@ -852,10 +1004,20 @@
             background-color: #ff8686 !important;
         }
         .progress {
-            height: 20px !important;
+            height: 17px !important;
         }
         .progress .progress-bar {
             border-radius: 0px !important;
+        }
+        .user-progress {
+            height: 8px !important;
+        }
+        .user-grid-inline{
+            display: inline-block !important;
+        }
+        .user-progress-card-text{
+            font-weight: 100 !important;
+            font-size: 13px !important;
         }
     </style>
 </div> 

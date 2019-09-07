@@ -31,17 +31,17 @@ class MeetingController extends Controller
             $getActionItem = ActionItem::where('meeting_id', $meeting_id)->get();
             
             $attendee_list = explode(",", unserialize($meeting->attendees));
-            $assigned_attendee_list = explode(",", unserialize($meeting->assign_attendees_in_task));
+            // $assigned_attendee_list = explode(",", unserialize($meeting->assign_attendees_in_task));
             
             foreach($attendee_list as $attendee):
                 $getUser = User::select('name', 'designation')->where('id', $attendee)->get();
                 $attendees[] = array('name' => $getUser[0]->name, 'designation' => $getUser[0]->designation);
             endforeach;
 
-            foreach($assigned_attendee_list as $attendee):
-                $getAttendeeUser = User::select('name', 'designation')->where('id', $attendee)->get();
-                $assigned_attendee[] = array('name' => $getAttendeeUser[0]->name, 'designation' => $getAttendeeUser[0]->designation);
-            endforeach;
+            // foreach($assigned_attendee_list as $attendee):
+            //     $getAttendeeUser = User::select('name', 'designation')->where('id', $attendee)->get();
+            //     $assigned_attendee[] = array('name' => $getAttendeeUser[0]->name, 'designation' => $getAttendeeUser[0]->designation);
+            // endforeach;
 
             $meetingInformation[] = array('meeting' => $meeting, 'taken_by_name' => $get_taken_by[0]->name,  'taken_by_designation' => $get_taken_by[0]->designation, 'reviewed_by_name' => $get_reviewed_by[0]->name, 'reviewed_by_designation' => $get_reviewed_by[0]->designation, 'attendee_list' => $attendees, 'assigned_attendee' => $assigned_attendee, 'agenda' => $getAgenda, 'action_item' => $getActionItem);
         endforeach;
@@ -83,10 +83,11 @@ class MeetingController extends Controller
 
         $req_agenda = $request->agenda;
         $req_action_list = $request->action_list;
+        $req_task_list = $request->task_list;
 
         $agenda = json_decode($req_agenda);
         $action_list = json_decode($req_action_list);
-        $attendee_list = explode(",", $request->assign_attendees_in_task);
+        $task_list = json_decode($req_task_list);
 
         $AddMeeting = new Meeting();
         $AddMeeting->meeting_title = $request->meeting_title;
@@ -97,7 +98,6 @@ class MeetingController extends Controller
         $AddMeeting->minutes_taken_by = $request->minutes_taken_by;
         $AddMeeting->minutes_reviewed_by = $request->minutes_reviewed_by;
         $AddMeeting->attendees = $attendees;
-        $AddMeeting->assign_attendees_in_task = $assign_attendees;
         $AddMeeting->apologies = $request->apologies;
         $AddMeeting->discussions = $request->discussions;
         if($request->attachment){
@@ -121,11 +121,25 @@ class MeetingController extends Controller
                 $AddActionItem->deadline = $item->deadline;
                 $AddActionItem->save();
 
-                foreach($attendee_list as $employee):
+            endforeach;
+        }
+
+        if(sizeof($task_list))
+        {
+            foreach($task_list as $task):
+                $task_attendee = $task->attendees;
+
+                $ActionItem = new ActionItem();
+                $ActionItem->title = $task->task;
+                $ActionItem->deadline = $task->deadline;
+                $ActionItem->save();
+
+                $task_id = $ActionItem->id;
+
+                foreach($task_attendee as $employee):
                     $AddTask = new TaskList();
-                    $AddTask->meeting_id = $meeting_id;
                     $AddTask->user_id = $employee;
-                    $AddTask->action_item_id = $AddActionItem->id;
+                    $AddTask->action_item_id = $task_id;
                     $AddTask->save();
                 endforeach;
 
@@ -143,15 +157,16 @@ class MeetingController extends Controller
         }
 
         return response()->json(array(
-            'data' => $action_list,
+            'data' => 'Successful',
             'status' => 'Successful',
             'message' => 'The metting has been saved successfully!'
         ));
     }
 
-    public function show(Meeting $meeting)
+    public function assignTask(Request $request)
     {
-        
+        $users = User::orderBy('rank', 'asc')->get();
+        return view('assignTask', compact('users'));
     }
 
     public function edit(Meeting $meeting)
