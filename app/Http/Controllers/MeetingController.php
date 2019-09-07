@@ -166,11 +166,46 @@ class MeetingController extends Controller
     public function assignTask(Request $request)
     {
         $users = User::orderBy('rank', 'asc')->get();
-        return view('assignTask', compact('users'));
+        $tasks = TaskList::select('task_lists.id', 'task_lists.status', 'users.name', 'users.designation', 'action_items.title', 'action_items.deadline')
+        ->leftjoin('users', 'users.id', '=', 'task_lists.user_id')
+        ->leftjoin('action_items', 'action_items.id', '=', 'task_lists.action_item_id')
+        ->orderBy('task_lists.id', 'DESC')
+        ->get();
+
+        return view('assignTask', compact('users', 'tasks'));
     }
 
-    public function edit(Meeting $meeting)
+    public function assigntaskToEmployee(Request $request)
     {
+        $task_list = $request->task_list;
+        if(sizeof($task_list))
+        {
+            foreach($task_list as $task):
+
+                $task_attendee = $task['attendees'];
+
+                $ActionItem = new ActionItem();
+                $ActionItem->title = $task['task'];
+                $ActionItem->deadline = $task['deadline'];
+                $ActionItem->save();
+
+                $task_id = $ActionItem->id;
+
+                foreach($task_attendee as $employee):
+                    $AddTask = new TaskList();
+                    $AddTask->user_id = $employee;
+                    $AddTask->action_item_id = $task_id;
+                    $AddTask->save();
+                endforeach;
+
+            endforeach;
+        }
+
+        return response()->json(array(
+            'data' => "Successful",
+            'status' => 'Successful',
+            'message' => 'The metting has been saved successfully!'
+        ));
         
     }
 

@@ -432,7 +432,7 @@
           var task = $('#task_item').val();
           var attendees = $('#attendees_to_be_in_task').val();
           var task_deadline = $('#task_deadline').val();
-          if(task && attendees && deadline){
+          if(task && attendees && task_deadline){
             task_list.push({task: task, attendees: attendees, deadline: task_deadline});
             $('#task_item_list ul').empty();
             $.each( task_list, function( key, value ) {
