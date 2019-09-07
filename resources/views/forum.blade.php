@@ -6,14 +6,14 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body"> 
-                  Disscussion Board
-                  <button type="button"  data-toggle="modal" data-target="#AssignTask" class="btn btn-secondary float-right">New Post</button>
+                  <h3 style="display: inline-block;">Disscussion Board</h3>
+                  <button type="button"  data-toggle="modal" data-target="#NewPost" class="btn btn-secondary float-right">New Post</button>
                   {{-- Start Modal --}}
-                  <div class="modal fade" id="AssignTask" tabindex="-1" role="dialog" aria-labelledby="AssignTask" aria-hidden="true">
+                  <div class="modal fade" id="NewPost" tabindex="-1" role="dialog" aria-labelledby="NewPost" aria-hidden="true">
                       <div class="modal-dialog custom-dialog-position" role="document">
                         <div class="modal-content custom-modal-size">
                           <div class="modal-header">
-                            <h5 class="modal-title">Assign Task</h5>
+                            <h5 class="modal-title">New Post</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -21,44 +21,27 @@
                           <div class="modal-body">
                               <div class="card">
                                 <div class="card-body">
-                                    
-                                    <h4 class="card-title">Task Details</h4>
+                                    <h4 class="card-title">Post Details</h4>
                                     <form class="forms-sample" onsubmit="event.preventDefault();" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                                       <div class="form-group">
-                                        <label for="meeting_date">Task</label>
-                                        <input class="form-control" name="task_item" id="task_item" type="text" placeholder="Task">
+                                        <label for="post_title">Title</label>
+                                        <input class="form-control" name="post_title" id="post_title" type="text" placeholder="Title">
                                       </div>
                                       <div class="form-group">
-                                          <div class="input-group">
-                                            <select class="form-control" name="attendees_to_be_in_task" id="attendees_to_be_in_task" multiple>
-                                              <?php foreach($users as $user): ?>
-                                                <option value="{{ $user->id }}" >{{ $user->name }}, {{ $user->designation }}</option>
-                                              <?php endforeach; ?>
-                                            </select>
-                                          </div>
+                                          <label for="category">Category</label>
+                                          <select class="form-control" name="category" id="category">
+                                            <?php foreach($category as $item): ?>
+                                            <option value="{{ $item->id }}" >{{ $item->title }}</option>
+                                          <?php endforeach; ?>
+                                          </select>
                                         </div>
                                       <div class="form-group">
-                                        <div class="input-group">
-                                          <input type="date" name="task_deadline" id="task_deadline" class="form-control" placeholder="Deadline" aria-label="Deadline" aria-describedby="colored-addon3">
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="input-group">
-                                          <div class="input-group-append bg-primary border-primary">
-                                            <span onclick="addTaskList()" class="input-group-text bg-transparent add-butn">
-                                              <i class="mdi mdi-clipboard-plus text-white"></i>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <br/>
-                                      <div id="task_item_list">
-                                        <ul class="list-group">
-                                        </ul>
+                                        <label for="details">Details</label>
+                                        <textarea class="form-control" name="details" id="details" rows="6" ></textarea>
                                       </div>
                                       <br/>
                                       
-                                      <button type="submit" onclick="SubmitTaskDetails()" class="btn btn-success mr-2">Submit</button>
+                                      <button type="submit" onclick="SubmitPostDetails()" class="btn btn-success mr-2">Submit</button>
                                       <button class="btn btn-light">Cancel</button>
                                     </form>
                                 </div>
@@ -70,8 +53,22 @@
                         </div>
                       </div>
                     </div>
+                    <!-- <span class="mdi mdi-tooltip-text"></span>  -->
                     {{-- End Modal --}}
                   <br/><br/>
+                  <?php foreach($posts as $post): 
+                    $post_details = $post['posts'];
+                    $post_comment = $post['comments'];
+                  ?>
+                    <hr>
+                    <div class="col-md-12">
+                      <span class="btn btn-inverse-secondary btn-rounded btn-fw float-right"><span class="mdi mdi-clock"></span> <?php echo date("F j, Y, g:i a", strtotime($post_details['post_date'])) ?> </span> <span class="btn btn-inverse-secondary btn-rounded btn-fw float-right"> <span class="mdi mdi-comment-outline"></span> {{ $post_comment }}</span>
+                      <a href="{{ url('/post-details/'.$post_details['id'] )}}" class="post_title"><h3>{{ $post_details['title'] }}</h3></a>
+                      <p><?php echo $post_details['details']; ?></p>
+                        <span class="btn btn-inverse-secondary btn-rounded btn-fw"><span class="mdi mdi-account"></span> {{ $post_details['name'] }}</span>
+                        <span class="btn btn-inverse-secondary btn-rounded btn-fw float-right"><span class="mdi mdi-tag"></span> {{ $post_details['category'] }}</span>
+                    </div>
+                  <?php endforeach; ?>
                   
                 </div>
             </div>
@@ -87,60 +84,41 @@
     </footer>
     <script>
         $("#forum").addClass("active");
+        
+        tinymce.init({
+          selector: '#details'
+        });
 
-        var task_list = [];
-
-        function addTaskList(){
-          var task = $('#task_item').val();
-          var attendees = $('#attendees_to_be_in_task').val();
-          var task_deadline = $('#task_deadline').val();
-          if(task && attendees && task_deadline){
-            task_list.push({task: task, attendees: attendees, deadline: task_deadline});
-            $('#task_item_list ul').empty();
-            $.each( task_list, function( key, value ) {
-              $("#task_item_list ul").append('<li id="task_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.task + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteTaskList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
-            });
-            $('#task_item').val('');
-            $('#attendees_to_be_in_task').val('');
-            $('#task_deadline').val('');
-          }
-        }
-
-        function deleteTaskList(delete_id)
+        function SubmitPostDetails()
         {
-          task_list.splice(delete_id, 1);
-          $('#task_list_no_'+delete_id).remove();
-          $('#task_item_list ul').empty();
-          if(task_list.length){
-            $.each( task_list, function( key, value ) {
-              $("#task_item_list ul").append('<li id="task_list_no_'+ key +'" class="list-group-item d-flex justify-content-between align-items-center"> <span class="first-row-action">' + value.task + '</span><span class="third-row-action">' + value.deadline + '</span> <span onclick="deleteTaskList('+ key +')" class="badge badge-danger badge-pill add-butn">X</span></li>');
-            });
-          }
-        }
+          var title = $("#post_title").val();
+          var details = tinyMCE.get('details').getContent();
+          var category = $("#category").val();
 
-        function SubmitTaskDetails()
-        {
           var params = { 
-            task_list: task_list,
+            title: $("#post_title").val(),
+            details: tinyMCE.get('details').getContent(),
+            category: $("#category").val(),
             '_token': '<?= csrf_token() ?>'
           }
 
-          console.log(params)
-
-          axios.post('/assigntaskToEmployee', params)
-          .then(function (response) {
-            Swal.fire({
-              position: 'top-end',
-              type: 'success',
-              title: 'The Task has been saved!',
-              showConfirmButton: false,
-              timer: 1500
+          if(title && details && category){
+            axios.post('/savePost', params)
+            .then(function (response) {
+              Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: 'Your information has been submitted successfully!',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              setTimeout(function() { location.reload();; }, 5000);
+            })
+            .catch(function (error) {
+              console.log(error);
             });
-            setTimeout(function() { location.reload();; }, 5000);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+          }
+          
         }
 
     </script>
@@ -186,6 +164,13 @@
         }
         .add-butn{
           cursor: pointer;
+        }
+        .post_title{
+          color: #4e4e4e !important;
+        }
+        .post_title:hover{
+          color: #266f42 !important;
+          text-decoration: none;
         }
     </style>
 </div> 

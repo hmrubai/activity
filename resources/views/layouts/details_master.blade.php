@@ -4,26 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>DGDA Activity Tracker </title>
-    <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/timePicker.css">
+    <link rel="stylesheet" href="../vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../vendors/css/vendor.bundle.addons.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/timePicker.css">
 
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <script src="js/axios.min.js"></script>
-    <script src="js/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <script src="../js/jquery-3.3.1.slim.min.js"></script>
+    <script src="../js/axios.min.js"></script>
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="../css/sweetalert2.min.css">
 
-    <script type="text/javascript" src="js/jquery-timepicker.js"></script>
-    <script src="js/timepicker.min.js"></script>
-    <link href="css/timepicker.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/jquery-timepicker.js"></script>
+    <script src="../js/timepicker.min.js"></script>
+    <link href="../css/timepicker.min.css" rel="stylesheet"/>
 
-    <script src="js/chart.js@2.8.0"></script>
-    <script src='js/tinymce.min.js'></script>
+    <script src="../js/chart.js@2.8.0"></script>
+    <script src='../js/tinymce.min.js'></script>
     <script src="https://cdn.tiny.cloud/1/qsg4qn2r8hwp1ayl9srqvm26cfxbpj2vwrusny7e6v0nh1ms/tinymce/5/tinymce.min.js"></script>
 
-    <link rel="shortcut icon" href="images/favicon.png" />
+    <link rel="shortcut icon" href="../images/favicon.png" />
     <meta name="csrf-token" content="">
     <script>
         window.myToken = <?php echo json_encode(['csrfToken' => csrf_token(), ]); ?>
@@ -34,10 +34,10 @@
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
                 <a class="navbar-brand brand-logo" href="{{ route('home') }}">
-                    <img src="images/jclogo.png" alt="logo" />
+                    <img src="../images/jclogo.png" alt="logo" />
                 </a>
                 <a class="navbar-brand brand-logo-mini" href="{{ route('home') }}">
-                    <img src="images/jclogo.png" alt="logo" />
+                    <img src="../images/jclogo.png" alt="logo" />
                 </a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center">
@@ -96,7 +96,7 @@
                             class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown"
                             aria-expanded="false">
                             <span class="profile-text">{{ Auth::user()->name }}</span>
-                            <img class="img-xs rounded-circle" src="images/faces/user.png" alt="Profile image">
+                            <img class="img-xs rounded-circle" src="../images/faces/user.png" alt="Profile image">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                             <a class="dropdown-item p-0">
@@ -132,7 +132,7 @@
                         <div class="nav-link">
                             <div class="user-wrapper">
                                 <div class="profile-image">
-                                    <img src="images/faces/user.png" alt="profile image">
+                                    <img src="../images/faces/user.png" alt="profile image">
                                 </div>
                                 <div class="text-wrapper">
                                     <p class="profile-name">{{ Auth::user()->name }}</p>
@@ -181,7 +181,7 @@
               @yield("content") 
             </div>
         </div>
-        <script src="vendors/js/vendor.bundle.base.js"></script>
+        <script src="../vendors/js/vendor.bundle.base.js"></script>
         
         <style>
             .sidebar .nav .nav-item .nav-link .menu-title {
